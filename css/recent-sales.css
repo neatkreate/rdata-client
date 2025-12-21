@@ -1,0 +1,166 @@
+/* -----------------------------------------
+   RECENT SALES PAGE
+------------------------------------------*/
+
+.recent-sales .page-header {
+  margin-bottom: 1.5rem;
+}
+.recent-sales .page-header h1 {
+  color: #004aad;
+  margin-bottom: 0.3rem;
+}
+.recent-sales .page-header p {
+  color: #555;
+  margin: 0;
+}
+
+/* -----------------------------------------
+   FILTERS
+------------------------------------------*/
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.filters select,
+.filters input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  flex: 1;
+  min-width: 150px;
+  background: #fff;
+  outline: none;
+}
+
+.filters select:focus,
+.filters input:focus {
+  border-color: #004aad;
+  box-shadow: 0 0 4px rgba(0, 74, 173, 0.4);
+}
+
+/* -----------------------------------------
+   DESKTOP TABLE VIEW
+------------------------------------------*/
+.sales-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.sales-table th {
+  background: #004aad;
+  color: #fff;
+  padding: 0.9rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.sales-table td {
+  padding: 0.9rem;
+  border-bottom: 1px solid #eee;
+}
+
+.sales-table tr:hover {
+  background: #f3f7ff;
+}
+
+/* Status Badges */
+.status-success {
+  background: #d4f8d4;
+  color: #0a8a0a;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-failed {
+  background: #ffe5e5;
+  color: #d60000;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* -----------------------------------------
+   MOBILE CARD VIEW
+------------------------------------------*/
+.sales-cards {
+  display: none; /* hidden on desktop */
+}
+
+.sale-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.sale-card h3 {
+  margin: 0;
+  color: #004aad;
+  font-size: 1.1rem;
+}
+
+.sale-card p {
+  margin: 0.3rem 0;
+  color: #444;
+}
+
+.sale-card .status-badge {
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+/* -----------------------------------------
+   TOAST NOTIFICATION
+------------------------------------------*/
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #004aad;
+  color: #fff;
+  padding: 1rem 1.3rem;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 3000;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -----------------------------------------
+   ANIMATIONS
+------------------------------------------*/
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -----------------------------------------
+   RESPONSIVE
+------------------------------------------*/
+@media (max-width: 768px) {
+  .sales-table {
+    display: none;
+  }
+  .sales-cards {
+    display: block;
+  }
+}

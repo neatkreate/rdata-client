@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - RData Agent Dashboard</title>
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">RData</div>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="api-docs.html">API Docs</a></li>
+        <li><a href="profile.html" class="active">Profile</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <section class="profile-page">
+
+      <!-- Page Header -->
+      <header class="page-header">
+        <h1>My Profile</h1>
+        <p>Manage your personal information</p>
+      </header>
+
+      <!-- Profile Card -->
+      <div class="profile-card">
+
+        <div class="profile-photo-section">
+          <img src="assets/default-avatar.png" alt="Profile Photo" class="profile-photo">
+          <button class="upload-btn">Change Photo</button>
+        </div>
+
+        <div class="profile-info">
+
+          <label>
+            Full Name
+            <input type="text" id="profile-name" placeholder="Enter full name">
+          </label>
+
+          <label>
+            Email Address
+            <input type="email" id="profile-email" placeholder="Enter email">
+          </label>
+
+          <label>
+            Phone Number
+            <input type="text" id="profile-phone" placeholder="Enter phone number">
+          </label>
+
+
+          <label>
+            Agent ID
+            <input type="text" id="profile-agent-id" disabled>
+          </label>
+
+          <label>
+            Registration Date
+            <input type="text" id="profile-created" disabled>
+          </label>
+
+          <label>
+            Change Password
+            <input type="password" id="profile-password" placeholder="Enter new password">
+          </label>
+
+          <button class="save-btn" id="save-profile">Save Changes</button>
+
+        </div>
+
+      </div>
+
+      <!-- Bundles Section (only for verified agents) -->
+      <section id="bundles-section" class="bundles-section-hidden"></section>
+
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Scripts -->
+  <script src="js/profile.js"></script>
+  <script src="js/main.js"></script>
+  <!-- Removed custom navbar click handler to restore default link behavior -->
+  <script src="js/bundles.js"></script>
+
+</body>
+</html>

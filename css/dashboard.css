@@ -1,0 +1,377 @@
+/* Session Timeout Modal */
+#sessionWarningModal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#sessionWarningModal .modal-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1;
+}
+#sessionWarningModal .modal-content {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border-radius: 10px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  text-align: center;
+  max-width: 350px;
+}
+#sessionWarningModal h3 {
+  margin-bottom: 0.5rem;
+}
+#sessionWarningModal .cta-btn {
+  margin-top: 1.2rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+}
+/* Global */
+body, html {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f9f9f9;
+  display: flex;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Dark Mode */
+body.dark-mode, html.dark-mode {
+  background: #181c24;
+  color: #e0e6ef;
+}
+
+.dark-mode .topbar {
+  background: #232a36;
+  color: #e0e6ef;
+}
+.dark-mode .sidebar {
+  background: #232a36;
+  color: #e0e6ef;
+}
+.dark-mode .sidebar-links a,
+.dark-mode .sidebar-links a.active {
+  color: #e0e6ef;
+  background: none;
+}
+.dark-mode .sidebar-links a.active {
+  background: #2d3a4a;
+}
+.dark-mode .dropdown.open .dropdown-toggle::after {
+  color: #e0e6ef;
+}
+.dark-mode .main-content,
+.dark-mode .card,
+.dark-mode .transactions,
+.dark-mode .settings,
+.dark-mode .settings-card {
+  background: #232a36;
+  color: #e0e6ef;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.dark-mode .bundles-table,
+.dark-mode .bundle-card {
+  background: #232a36;
+  color: #e0e6ef;
+}
+.dark-mode .bundles-table th {
+  background: #2d3a4a;
+  color: #e0e6ef;
+}
+.dark-mode .bundles-table tr:hover {
+  background: #232a36;
+}
+.dark-mode .toast {
+  background: #2d3a4a;
+  color: #e0e6ef;
+}
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  background: #232a36;
+  color: #e0e6ef;
+  border: 1px solid #444b5a;
+}
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+  border-color: #0077ff;
+}
+.dark-mode .save-btn,
+.dark-mode .cta-btn {
+  background: #2d3a4a;
+  color: #e0e6ef;
+}
+.dark-mode .save-btn:hover,
+.dark-mode .cta-btn:hover {
+  background: #0077ff;
+  color: #fff;
+}
+
+/* Compact Mode */
+body.compact-mode .main-content,
+body.compact-mode .settings-page,
+body.compact-mode .settings-container,
+body.compact-mode .settings-card,
+body.compact-mode .card,
+body.compact-mode .transactions,
+body.compact-mode .stats,
+body.compact-mode .bundles-table,
+body.compact-mode .bundle-card {
+  padding: 0.5rem !important;
+  margin: 0.5rem 0 !important;
+  font-size: 0.95em;
+}
+body.compact-mode .sidebar {
+  width: 160px;
+  padding: 0.5rem;
+}
+body.compact-mode .sidebar-links li {
+  margin: 0.5rem 0;
+}
+body.compact-mode .topbar {
+  height: 44px;
+  padding: 0 0.5rem;
+  font-size: 0.95em;
+}
+body.compact-mode .sidebar {
+  top: 44px;
+}
+body.compact-mode .dashboard-header h1,
+body.compact-mode .page-header h1 {
+  font-size: 1.1rem;
+}
+
+/* Topbar */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #004aad;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  z-index: 1000;
+}
+.topbar .logo {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background: #fff;
+  margin: 4px 0;
+  border-radius: 2px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #004aad;
+  color: #fff;
+  min-height: 100vh;
+  padding: 1rem;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+.sidebar.active {
+  transform: translateX(0);
+}
+.sidebar-links {
+  list-style: none;
+  padding: 0;
+}
+.sidebar-links li {
+  margin: 1rem 0;
+}
+.sidebar-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.sidebar-links a.active {
+  background: #0077ff;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+/* Dropdowns */
+.dropdown .dropdown-menu {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0;
+}
+.dropdown.open .dropdown-menu {
+  max-height: 500px;
+  opacity: 1;
+}
+
+/* Arrow rotation */
+.dropdown-toggle::after {
+  content: "▾";
+  margin-left: 6px;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.dropdown.open .dropdown-toggle::after {
+  transform: rotate(180deg);
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 60px);
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+  z-index: 998;
+}
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 220px;
+  margin-top: 60px;
+  padding: 2rem;
+  flex: 1;
+  box-sizing: border-box;
+}
+.dashboard-header h1 {
+  margin-bottom: 0.5rem;
+  color: #004aad;
+}
+
+/* Stats Cards */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+.card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  flex: 1;
+  text-align: center;
+  min-width: 200px;
+}
+.card h3 {
+  margin-bottom: 1rem;
+  color: #0077ff;
+}
+
+/* Transactions & Settings */
+.transactions, .settings {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-top: 2rem;
+}
+.transactions table {
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+}
+.transactions th, .transactions td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Settings Form */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.settings-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+}
+.settings-form input, .settings-form select {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.settings-form button {
+  background: #004aad;
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.settings-form button:hover {
+  background: #0077ff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  .main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  .stats {
+    flex-direction: column;
+    width: 100%;
+  }
+  .card {
+    min-width: auto;
+    width: 100%;
+  }
+}
+/* Playful bounce animation */
+.bounce {
+  animation: bounceAnim 0.3s ease;
+}
+
+@keyframes bounceAnim {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}

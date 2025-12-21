@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Agents - RData Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo">RData Admin</div>
+    <div class="topbar-right">
+      <div class="notification" id="notificationBtn">
+        <span class="bell">🔔</span>
+        <span class="badge" id="notificationCount">3</span>
+        <audio id="notificationSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+      </div>
+      <div class="profile">
+        <img src="https://via.placeholder.com/35" alt="Admin Avatar">
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <ul class="sidebar-links">
+      <li><a href="admin.html">Dashboard</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Agents ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="all-agents.html" class="active">All Agents</a></li>
+          <li><a href="pending-approvals.html">Pending Approvals</a></li>
+          <li><a href="suspended-agents.html">Suspended Agents</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Bundles ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="discounts.html">Discounts</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Reports ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="sales-report.html">Sales Report</a></li>
+          <li><a href="agent-performance.html">Agent Performance</a></li>
+          <li><a href="revenue-analytics.html">Revenue Analytics</a></li>
+        </ul>
+      </li>
+      <li><a href="admin-settings.html">Settings</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Notification Panel -->
+  <div class="notification-panel" id="notificationPanel">
+    <h2>Notifications</h2>
+    <ul id="notificationList">
+      <li>New agent registration pending approval</li>
+      <li>Bundle discount applied successfully</li>
+      <li>System update scheduled for tonight</li>
+    </ul>
+    <label class="sound-toggle">
+      <input type="checkbox" id="soundToggle" checked>
+      Enable Sound Alerts
+    </label>
+    <button id="markAllRead">Mark all as read</button>
+    <button id="closeNotifications">Close</button>
+  </div>
+
+  <!-- Toast Popup -->
+  <div class="toast" id="toast"></div>
+  <main class="main-content">
+    <h1>All Agents</h1>
+    <section class="user-management">
+      <h2>Agent List</h2>
+      <div class="user-actions-row">
+        <input type="text" id="searchAgents" placeholder="Search agents by name, email, or status..." class="search-users-input">
+        <label for="filterAgentStatus" class="visually-hidden">Filter by agent status</label>
+        <select id="filterAgentStatus" aria-label="Filter by agent status">
+          <option value="">All Statuses</option>
+          <option value="Active">Active</option>
+          <option value="Pending">Pending</option>
+          <option value="Suspended">Suspended</option>
+        </select>
+        <button id="addAgentBtn" class="cta-btn">Add Agent</button>
+        <button id="bulkSuspendBtn" class="bulk-btn">Bulk Suspend</button>
+        <button id="bulkDeleteBtn" class="bulk-btn">Bulk Delete</button>
+      </div>
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" id="selectAllAgents" aria-label="Select all agents">
+            </th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="agentsTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+      <!-- Add/Edit Agent Modal -->
+      <div class="modal" id="agentModal">
+        <div class="modal-content">
+          <h2 id="agentModalTitle">Add Agent</h2>
+          <form id="agentForm">
+            <label>Name<input type="text" id="modalAgentName" required></label>
+            <label>Email<input type="email" id="modalAgentEmail" required></label>
+            <label>Status
+              <select id="modalAgentStatus">
+                <option value="Active">Active</option>
+                <option value="Pending">Pending</option>
+                <option value="Suspended">Suspended</option>
+              </select>
+            </label>
+            <div class="modal-actions">
+              <button type="submit" class="cta-btn">Save</button>
+              <button type="button" id="closeAgentModal" class="cancel-btn">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Confirm Delete Modal -->
+      <div class="modal" id="confirmDeleteModal">
+        <div class="modal-content">
+          <h2>Delete Agent</h2>
+          <p>Are you sure you want to delete this agent?</p>
+          <div class="modal-actions">
+            <button id="confirmDeleteBtn" class="cta-btn">Delete</button>
+            <button id="cancelDeleteBtn" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="js/auth.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth(['admin']);
+    document.addEventListener('DOMContentLoaded', wireLogout);
+    // Prevent back navigation after logout
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, '', window.location.href);
+      window.onpopstate = function() {
+        window.history.pushState(null, '', window.location.href);
+      };
+    }
+  </script>
+  <script src="js/admin.js"></script>
+  <script src="js/all-agents.js"></script>
+</body>
+</html>

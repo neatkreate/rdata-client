@@ -1,0 +1,222 @@
+/* Navbar Styles (copied from login.css) */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #004aad;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.navbar {
+  position: relative;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.nav-links a.active,
+.nav-links a:focus,
+.nav-links a:hover {
+  text-decoration: underline;
+  color: #e0eaff;
+}
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background: #fff;
+  margin: 4px 0;
+  border-radius: 2px;
+}
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: #004aad;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 200px;
+    padding: 1rem;
+  }
+  .nav-links.active {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+  }
+}
+/* -----------------------------------------
+   PROFILE PAGE
+------------------------------------------*/
+
+.profile-page .page-header {
+  margin-bottom: 1.5rem;
+}
+.profile-page .page-header h1 {
+  color: #004aad;
+  margin-bottom: 0.3rem;
+}
+.profile-page .page-header p {
+  color: #555;
+  margin: 0;
+}
+
+/* -----------------------------------------
+   PROFILE CARD
+------------------------------------------*/
+.profile-card {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Profile Photo Section */
+.profile-photo-section {
+  text-align: center;
+  width: 200px;
+}
+
+.profile-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #004aad;
+  margin-bottom: 1rem;
+}
+
+.upload-btn {
+  background: #0077ff;
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.upload-btn:hover {
+  background: #005fcc;
+}
+
+/* Profile Info Section */
+.profile-info {
+  flex: 1;
+  display: grid;
+  gap: 1rem;
+}
+
+.profile-info label {
+  font-weight: 600;
+  color: #333;
+  display: block;
+}
+
+.profile-info input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+  font-size: 0.95rem;
+  outline: none;
+  background: #fff;
+}
+
+.profile-info input:focus {
+  border-color: #004aad;
+  box-shadow: 0 0 4px rgba(0, 74, 173, 0.4);
+}
+
+/* Save Button */
+.save-btn {
+  background: #004aad;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  width: fit-content;
+  margin-top: 1rem;
+  transition: background 0.2s ease;
+}
+.save-btn:hover {
+  background: #003680;
+}
+
+/* Disabled Input */
+.profile-info input:disabled {
+  background: #f3f3f3;
+  cursor: not-allowed;
+}
+
+/* -----------------------------------------
+   TOAST NOTIFICATION
+------------------------------------------*/
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #004aad;
+  color: #fff;
+  padding: 1rem 1.3rem;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 3000;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -----------------------------------------
+   ANIMATIONS
+------------------------------------------*/
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -----------------------------------------
+   RESPONSIVE
+------------------------------------------*/
+@media (max-width: 768px) {
+  .profile-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-info {
+    width: 100%;
+  }
+
+  .save-btn {
+    width: 100%;
+  }
+}

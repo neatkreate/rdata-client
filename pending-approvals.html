@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Approvals - RData Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo">RData Admin</div>
+    <div class="topbar-right">
+      <div class="notification" id="notificationBtn">
+        <span class="bell">🔔</span>
+        <span class="badge" id="notificationCount">3</span>
+        <audio id="notificationSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+      </div>
+      <div class="profile">
+        <img src="https://via.placeholder.com/35" alt="Admin Avatar">
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <ul class="sidebar-links">
+      <li><a href="admin.html">Dashboard</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Agents ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="all-agents.html">All Agents</a></li>
+          <li><a href="pending-approvals.html" class="active">Pending Approvals</a></li>
+          <li><a href="suspended-agents.html">Suspended Agents</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Bundles ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="discounts.html">Discounts</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Reports ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="sales-report.html">Sales Report</a></li>
+          <li><a href="agent-performance.html">Agent Performance</a></li>
+          <li><a href="revenue-analytics.html">Revenue Analytics</a></li>
+        </ul>
+      </li>
+      <li><a href="admin-settings.html">Settings</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Notification Panel -->
+  <div class="notification-panel" id="notificationPanel">
+    <h2>Notifications</h2>
+    <ul id="notificationList">
+      <li>New agent registration pending approval</li>
+      <li>Bundle discount applied successfully</li>
+      <li>System update scheduled for tonight</li>
+    </ul>
+    <label class="sound-toggle">
+      <input type="checkbox" id="soundToggle" checked>
+      Enable Sound Alerts
+    </label>
+    <button id="markAllRead">Mark all as read</button>
+    <button id="closeNotifications">Close</button>
+  </div>
+
+  <!-- Toast Popup -->
+  <div class="toast" id="toast"></div>
+  <main class="main-content">
+    <h1>Pending Approvals</h1>
+    <section class="user-management">
+      <h2>Agents Awaiting Approval</h2>
+      <div class="user-actions-row">
+        <input type="text" id="searchPending" placeholder="Search by name or email..." class="search-users-input">
+        <button id="bulkApproveBtn" class="cta-btn">Bulk Approve</button>
+      </div>
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" id="selectAllPending" aria-label="Select all pending agents">
+            </th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Requested On</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="pendingTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+      <!-- Approve/Reject Modal -->
+      <div class="modal" id="approveModal">
+        <div class="modal-content">
+          <h2 id="approveModalTitle">Approve Agent</h2>
+          <p>Approve this agent's registration?</p>
+          <div class="modal-actions">
+            <button id="confirmApproveBtn" class="cta-btn">Approve</button>
+            <button id="cancelApproveBtn" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal" id="rejectModal">
+        <div class="modal-content">
+          <h2>Reject Agent</h2>
+          <p>Reject this agent's registration?</p>
+          <div class="modal-actions">
+            <button id="confirmRejectBtn" class="cta-btn">Reject</button>
+            <button id="cancelRejectBtn" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="js/auth.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth(['admin']);
+    document.addEventListener('DOMContentLoaded', wireLogout);
+    // Prevent back navigation after logout
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, '', window.location.href);
+      window.onpopstate = function() {
+        window.history.pushState(null, '', window.location.href);
+      };
+    }
+  </script>
+  <script src="js/admin.js"></script>
+  <script src="js/pending-approvals.js"></script>
+</body>
+</html>

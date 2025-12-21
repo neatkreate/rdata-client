@@ -1,0 +1,168 @@
+/* -----------------------------------------
+   SETTINGS PAGE
+------------------------------------------*/
+
+.settings-page .page-header {
+  margin-bottom: 1.5rem;
+}
+.settings-page .page-header h1 {
+  color: #004aad;
+  margin-bottom: 0.3rem;
+}
+.settings-page .page-header p {
+  color: #555;
+  margin: 0;
+}
+
+/* -----------------------------------------
+   SETTINGS CONTAINER
+------------------------------------------*/
+.settings-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* -----------------------------------------
+   SETTINGS CARD
+------------------------------------------*/
+.settings-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+.settings-card h3 {
+  margin: 0 0 1rem 0;
+  color: #004aad;
+  font-size: 1.2rem;
+}
+
+/* -----------------------------------------
+   TOGGLE ROWS
+------------------------------------------*/
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Toggle Switch */
+.toggle-row input[type="checkbox"] {
+  width: 45px;
+  height: 22px;
+  appearance: none;
+  background: #ccc;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.toggle-row input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.toggle-row input[type="checkbox"]:checked {
+  background: #004aad;
+}
+
+.toggle-row input[type="checkbox"]:checked::before {
+  transform: translateX(23px);
+}
+
+/* -----------------------------------------
+   INPUT FIELDS
+------------------------------------------*/
+.settings-card label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.settings-card input[type="password"] {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  outline: none;
+  font-size: 0.95rem;
+}
+
+.settings-card input[type="password"]:focus {
+  border-color: #004aad;
+  box-shadow: 0 0 4px rgba(0, 74, 173, 0.4);
+}
+
+/* -----------------------------------------
+   SAVE BUTTON
+------------------------------------------*/
+.save-btn {
+  background: #004aad;
+  color: #fff;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  transition: background 0.2s ease;
+}
+
+.save-btn:hover {
+  background: #003680;
+}
+
+/* -----------------------------------------
+   TOAST NOTIFICATION
+------------------------------------------*/
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #004aad;
+  color: #fff;
+  padding: 1rem 1.3rem;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 3000;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -----------------------------------------
+   ANIMATIONS
+------------------------------------------*/
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -----------------------------------------
+   RESPONSIVE
+------------------------------------------*/
+@media (max-width: 768px) {
+  .settings-container {
+    grid-template-columns: 1fr;
+  }
+}

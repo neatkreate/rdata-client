@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RData - Agent Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo">RData</div>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <ul class="sidebar-links">
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+
+      <!-- Bundles Dropdown -->
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Bundles ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="available-bundles.html">Available Bundles</a></li>
+          <li><a href="my-bundles.html">My Bundles</a></li>
+          <!-- <li><a href="discount-offers.html">Discount Offers</a></li> -->
+        </ul>
+      </li>
+
+      <!-- Sales Dropdown -->
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Sales ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="recent-sales.html">Recent Sales</a></li>
+          <!-- <li><a href="commission-report.html">Commission Report</a></li> -->
+        </ul>
+      </li>
+
+      <li><a href="#">Profile</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Overlay for mobile sidebar -->
+  <div class="overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="dashboard-header">
+      <h1>Welcome, Agent</h1>
+      <p>Here’s your quick overview</p>
+    </header>
+
+    <!-- Stats Cards -->
+    <section class="stats">
+      <div class="card">
+        <h3>Total Bundles Sold</h3>
+        <p>120</p>
+      </div>
+      <div class="card">
+        <h3>Total Profit</h3>
+        <p>₵2,400</p>
+      </div>
+      <div class="card">
+        <h3>Active Customers</h3>
+        <p>45</p>
+      </div>
+      <!-- Pending Commissions card removed -->
+    </section>
+
+    <!-- Recent Transactions -->
+    <section class="transactions">
+      <h2>Recent Transactions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Bundle</th>
+            <th>Customer</th>
+            <th>Profit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dec 9, 2025</td>
+            <td>5GB</td>
+            <td>Kwame</td>
+            <td>₵20</td>
+          </tr>
+          <tr>
+            <td>Dec 8, 2025</td>
+            <td>10GB</td>
+            <td>Akua</td>
+            <td>₵40</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Settings Section -->
+    <section class="settings">
+      <h2>Agent Settings</h2>
+      <form class="settings-form">
+        <label>Email Notifications
+          <select>
+            <option>Enabled</option>
+            <option>Disabled</option>
+          </select>
+        </label>
+        <label>Theme
+          <select id="themeSelect">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <label>Change Password
+          <input type="password" placeholder="New Password">
+        </label>
+        <button type="submit" class="cta-btn">Save Settings</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/dashboard.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth(['agent','admin']);
+    document.addEventListener('DOMContentLoaded', wireLogout);
+    // Prevent back navigation after logout
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, '', window.location.href);
+      window.onpopstate = function() {
+        window.history.pushState(null, '', window.location.href);
+      };
+    }
+  </script>
+</body>
+</html>

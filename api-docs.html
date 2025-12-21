@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation - RData</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/api-docs.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo">RData</div>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="api-docs.html" class="active">API Docs</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section class="api-docs-container">
+      <h1>RData API Documentation</h1>
+      <p class="api-docs-intro">Integrate your app or system with RData to automate bundle sales, agent management, and more. All requests require your API key in the Authorization header.</p>
+
+      <div class="api-docs-section">
+        <h2>Authentication</h2>
+        <p>All API requests require authentication using your <strong>Agent API Key</strong> in the <code>Authorization</code> header:</p>
+        <pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+      </div>
+
+      <div class="api-docs-section">
+        <h2>Endpoints</h2>
+        <table class="api-docs-table">
+          <thead>
+            <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="api-docs-badge">POST</span></td><td>/api/bundles/purchase</td><td>Purchase a bundle for a customer</td></tr>
+            <tr><td><span class="api-docs-badge">GET</span></td><td>/api/bundles</td><td>List available bundles</td></tr>
+            <tr><td><span class="api-docs-badge">GET</span></td><td>/api/agent/profile</td><td>Get agent profile details</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="api-docs-section">
+        <h2>Example: Purchase Bundle</h2>
+        <pre><code>POST /api/bundles/purchase
+{
+  "customer": "024XXXXXXX",
+  "bundle": "MTN 5GB",
+  "amount": 30.00
+}
+</code></pre>
+        <ul>
+          <li><strong>customer</strong>: Customer's phone number (string)</li>
+          <li><strong>bundle</strong>: Bundle name (string, e.g., "MTN 5GB")</li>
+          <li><strong>amount</strong>: Amount to charge (number)</li>
+        </ul>
+      </div>
+
+      <div class="api-docs-section">
+        <h2>Response Example</h2>
+        <pre><code>{
+  "status": "success",
+  "transactionId": "TX123456789",
+  "message": "Bundle purchased successfully."
+}
+</code></pre>
+      </div>
+
+      <div class="api-docs-section">
+        <h2>Errors</h2>
+        <ul>
+          <li><strong>401 Unauthorized</strong>: Invalid or missing API key</li>
+          <li><strong>400 Bad Request</strong>: Invalid parameters</li>
+          <li><strong>500 Server Error</strong>: Internal server error</li>
+        </ul>
+      </div>
+
+      <div class="api-docs-section" id="register-api-section">
+        <h2>Register Your Website API</h2>
+        <p>Verified agents can register their website to receive API access. Enter your website URL below. Once approved, you will be able to use your API key to access the endpoints above.</p>
+        <form id="register-api-form">
+          <label for="website-url">Website URL:</label>
+          <input type="url" id="website-url" name="website-url" placeholder="https://yourwebsite.com" required>
+          <button type="submit">Register Website</button>
+        </form>
+        <div id="register-api-message"></div>
+      </div>
+
+    </section>
+  </main>
+  <footer class="footer">
+    <p>&copy; 2025 RData. All rights reserved.</p>
+  </footer>
+  <script src="js/api-docs.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RData - Admin Dashboard</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo">RData Admin</div>
+    <div class="topbar-right">
+      <div class="notification" id="notificationBtn">
+        <span class="bell">🔔</span>
+        <span class="badge" id="notificationCount">3</span>
+        <audio id="notificationSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+      </div>
+      <div class="profile">
+        <img src="https://via.placeholder.com/35" alt="Admin Avatar">
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <ul class="sidebar-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="api-docs.html">API Docs</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="admin.html" class="active">Admin</a></li>
+      <li><a href="admin-settings.html">Settings</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Notification Panel -->
+  <div class="notification-panel" id="notificationPanel">
+    <h2>Notifications</h2>
+    <ul id="notificationList">
+      <li>New agent registration pending approval</li>
+      <li>System update scheduled for tonight</li>
+    </ul>
+    <label class="sound-toggle">
+      <input type="checkbox" id="soundToggle" checked>
+      Enable Sound Alerts
+    </label>
+    <button id="markAllRead">Mark all as read</button>
+    <button id="closeNotifications">Close</button>
+  </div>
+
+  <!-- Toast Popup -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="dashboard-header">
+      <h1>Admin Dashboard</h1>
+      <p>Manage agents, bundles, and monitor performance</p>
+    </header>
+
+      <!-- Analytics & Reports -->
+      <section class="analytics">
+        <h2>Analytics & Reports</h2>
+        <div class="charts-row">
+          <div class="chart-card">
+            <h4>Sales (Last 6 Months)</h4>
+            <canvas id="salesChart" height="120"></canvas>
+          </div>
+          <div class="chart-card">
+            <h4>User Growth</h4>
+            <canvas id="userChart" height="120"></canvas>
+          </div>
+          <div class="chart-card">
+            <h4>Profit</h4>
+            <canvas id="profitChart" height="120"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Search & Filter -->
+      <section class="search-filter">
+        <input type="text" id="searchUsers1" class="search-users-input" placeholder="Search users, email, or status...">
+        <label for="filterRole" class="visually-hidden">Filter by role</label>
+        <select id="filterRole">
+          <option value="">All Roles</option>
+          <option value="admin">Admin</option>
+          <option value="agent">Agent</option>
+          <option value="viewer">Viewer</option>
+        </select>
+        <button id="searchBtn">Search</button>
+      </section>
+
+      <!-- User Management -->
+      <section class="user-management">
+        <h2>User Management</h2>
+        <button class="addUserBtn">Add User</button>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <label for="selectAllUsers" class="visually-hidden">Select all users</label>
+                <input type="checkbox" id="selectAllUsers">
+              </th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="userTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+        <button id="bulkApproveBtn" type="button">Bulk Approve</button>
+        <button id="bulkSuspendBtn1" type="button">Bulk Suspend</button>
+        <button id="bulkDeleteBtn1" type="button">Bulk Delete</button>
+      </section>
+
+      <!-- Role & Permission Control -->
+      <section class="roles">
+        <h2>Role & Permission Control</h2>
+        <table class="roles-table">
+          <thead>
+            <tr><th>Role</th><th>Can View</th><th>Can Edit</th><th>Can Delete</th><th>Can Manage Users</th></tr>
+          </thead>
+          <tbody id="rolesTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+        <button id="saveRolesBtn" class="cta-btn">Save Permissions</button>
+      </section>
+
+      <!-- System Logs -->
+      <section class="system-logs">
+        <h2>System Logs</h2>
+        <div class="log-filter-row">
+          <input type="text" id="logSearch" placeholder="Search logs..." class="max-width-200">
+          <label for="logStatusFilter" class="visually-hidden">Filter logs by status</label>
+          <select id="logStatusFilter">
+            <option value="">All Statuses</option>
+            <option value="Success">Success</option>
+            <option value="Failed">Failed</option>
+            <option value="Warning">Warning</option>
+          </select>
+        </div>
+        <table class="logs-table">
+          <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Status</th></tr></thead>
+          <tbody id="logsTableBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Audit Trail -->
+      <section class="audit-trail">
+        <h2>Audit Trail</h2>
+        <div class="audit-filter-row">
+          <input type="text" id="auditSearch" placeholder="Search audit trail..." class="max-width-200">
+          <label for="auditUserFilter" class="visually-hidden">Filter audit trail by user</label>
+          <select id="auditUserFilter" title="Filter audit trail by user">
+            <option value="">All Users</option>
+            <option value="Kojo Mensah">Kojo Mensah</option>
+            <option value="Akua Serwaa">Akua Serwaa</option>
+            <option value="Yaw Boateng">Yaw Boateng</option>
+          </select>
+        </div>
+        <table class="audit-table">
+          <thead><tr><th>Date</th><th>User</th><th>Change</th><th>Details</th></tr></thead>
+          <tbody id="auditTrailBody">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </section>
+
+    <!-- Stats Cards -->
+    <section class="stats">
+      <div class="card"><h3>Total Agents</h3><p>250</p></div>
+      <div class="card"><h3>Active Bundles</h3><p>15</p></div>
+      <div class="card"><h3>Total Sales</h3><p>₵120,000</p></div>
+      <div class="card"><h3>Pending Approvals</h3><p>12</p></div>
+    </section>
+
+    <!-- Agent Management -->
+    <section class="user-management">
+      <h2>User Management</h2>
+      <div class="user-actions-row">
+        <button class="addUserBtn cta-btn">Add User</button>
+        <input type="text" id="searchUsers2" placeholder="Search users, email, or status..." class="search-users-input">
+        <select id="filterRole">
+          <option value="">All Roles</option>
+          <option value="admin">Admin</option>
+          <option value="agent">Agent</option>
+          <option value="viewer">Viewer</option>
+        </select>
+      </div>
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selectAllUsers"></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+      <div class="bulk-actions">
+        <button id="bulkApproveBtn2" class="bulk-btn" type="button">Bulk Approve</button>
+        <button id="bulkSuspendBtn2" class="bulk-btn" type="button">Bulk Suspend</button>
+        <button id="bulkDeleteBtn2" class="bulk-btn" type="button">Bulk Delete</button>
+      </div>
+      <!-- Add/Edit User Modal -->
+      <div class="modal" id="userModal">
+        <div class="modal-content">
+          <h2 id="userModalTitle">Add User</h2>
+          <form id="userForm">
+            <label>Name<input type="text" id="modalUserName" required></label>
+            <label>Email<input type="email" id="modalUserEmail" required></label>
+            <label>Role
+              <select id="modalUserRole">
+                <option value="admin">Admin</option>
+                <option value="agent">Agent</option>
+                <option value="viewer">Viewer</option>
+              </select>
+            </label>
+            <label>Status
+              <select id="modalUserStatus">
+                <option value="Active">Active</option>
+                <option value="Pending">Pending</option>
+                <option value="Suspended">Suspended</option>
+              </select>
+            </label>
+            <div class="modal-actions">
+              <button type="submit" class="cta-btn">Save</button>
+              <button type="button" id="closeUserModal" class="cancel-btn">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="js/chart.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth(['admin']);
+    document.addEventListener('DOMContentLoaded', wireLogout);
+    // Prevent back navigation after logout
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, '', window.location.href);
+      window.onpopstate = function() {
+        window.history.pushState(null, '', window.location.href);
+      };
+    }
+  </script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

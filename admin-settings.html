@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Settings - RData Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo">RData Admin</div>
+    <div class="topbar-right">
+      <div class="notification" id="notificationBtn">
+        <span class="bell">🔔</span>
+        <span class="badge" id="notificationCount">3</span>
+        <audio id="notificationSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+      </div>
+      <div class="profile">
+        <img src="https://via.placeholder.com/35" alt="Admin Avatar">
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <ul class="sidebar-links">
+      <li><a href="admin.html">Dashboard</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Agents ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="all-agents.html">All Agents</a></li>
+          <li><a href="pending-approvals.html">Pending Approvals</a></li>
+          <li><a href="suspended-agents.html">Suspended Agents</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Bundles ▾</a>
+        <ul class="dropdown-menu">
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Reports ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="sales-report.html">Sales Report</a></li>
+          <li><a href="agent-performance.html">Agent Performance</a></li>
+          <li><a href="revenue-analytics.html">Revenue Analytics</a></li>
+        </ul>
+      </li>
+      <li><a href="admin-settings.html" class="active">Settings</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Notification Panel -->
+  <div class="notification-panel" id="notificationPanel">
+    <h2>Notifications</h2>
+    <ul id="notificationList">
+      <li>New agent registration pending approval</li>
+      <li>System update scheduled for tonight</li>
+    </ul>
+    <label class="sound-toggle">
+      <input type="checkbox" id="soundToggle" checked>
+      Enable Sound Alerts
+    </label>
+    <button id="markAllRead">Mark all as read</button>
+    <button id="closeNotifications">Close</button>
+  </div>
+
+  <!-- Toast Popup -->
+  <div class="toast" id="toast"></div>
+  <main class="main-content">
+    <h1>Settings</h1>
+    <section class="settings-section">
+      <h2>Admin Settings</h2>
+      <form class="settings-form" id="adminSettingsForm">
+        <div class="profile-pic-upload">
+          <img id="profilePicPreview" src="https://via.placeholder.com/80" alt="Profile Picture">
+          <label for="profilePicInput" class="visually-hidden">Upload Profile Picture</label>
+          <input type="file" id="profilePicInput" accept="image/*" title="Upload Profile Picture" placeholder="Upload Profile Picture">
+        </div>
+        <label>Name <input type="text" id="adminName" required></label>
+        <label>Email <input type="email" id="adminEmail" required></label>
+        <label>Enable 2FA <input type="checkbox" id="twoFAToggle"></label>
+        <label>Notification Email <input type="email" id="notificationEmail" placeholder="admin@email.com"></label>
+        <label>Theme
+          <select id="themeSelect">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="system">System</option>
+          </select>
+        </label>
+        <label>Language
+          <select id="languageSelect">
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+          </select>
+        </label>
+        <button class="cta-btn" type="submit">Save Settings</button>
+      </form>
+      <form class="settings-form" id="passwordForm">
+        <h3>Change Password</h3>
+        <label>Current Password <input type="password" id="currentPassword" required></label>
+        <label>New Password <input type="password" id="newPassword" required></label>
+        <label>Confirm New Password <input type="password" id="confirmNewPassword" required></label>
+        <button class="cta-btn" type="submit">Change Password</button>
+      </form>
+      <div class="settings-group">
+        <h3>Account Activity Log</h3>
+        <ul id="activityLog" class="activity-log"></ul>
+      </div>
+      <div class="settings-group">
+        <button id="deleteAccountBtn" class="danger-btn">Delete Account</button>
+      </div>
+      <!-- Delete Account Modal -->
+      <div id="deleteAccountModal" class="modal">
+        <div class="modal-content" tabindex="-1">
+          <h2>Confirm Account Deletion</h2>
+          <p>This action is irreversible. Are you sure you want to delete your account?</p>
+          <div class="modal-actions">
+            <button id="confirmDeleteBtn" class="danger-btn">Yes, Delete</button>
+            <button id="closeDeleteModalBtn" class="danger-btn modal-cancel-btn">No, Don’t Delete</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="js/auth.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth(['admin']);
+    document.addEventListener('DOMContentLoaded', wireLogout);
+    // Prevent back navigation after logout
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, '', window.location.href);
+      window.onpopstate = function() {
+        window.history.pushState(null, '', window.location.href);
+      };
+    }
+  </script>
+  <script src="js/admin.js"></script>
+  <script src="js/admin-settings.js"></script>
+</body>
+</html>

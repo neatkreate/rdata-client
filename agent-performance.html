@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Performance - RData Admin</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo">RData Admin</div>
+    <div class="topbar-right">
+      <div class="notification" id="notificationBtn">
+        <span class="bell">🔔</span>
+        <span class="badge" id="notificationCount">3</span>
+        <audio id="notificationSound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+      </div>
+      <div class="profile">
+        <img src="https://via.placeholder.com/35" alt="Admin Avatar">
+      </div>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <ul class="sidebar-links">
+      <li><a href="admin.html">Dashboard</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Agents ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="all-agents.html">All Agents</a></li>
+          <li><a href="pending-approvals.html">Pending Approvals</a></li>
+          <li><a href="suspended-agents.html">Suspended Agents</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Bundles ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="discounts.html">Discounts</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Reports ▾</a>
+        <ul class="dropdown-menu">
+          <li><a href="sales-report.html">Sales Report</a></li>
+          <li><a href="agent-performance.html" class="active">Agent Performance</a></li>
+          <li><a href="revenue-analytics.html">Revenue Analytics</a></li>
+        </ul>
+      </li>
+      <li><a href="admin-settings.html">Settings</a></li>
+      <li><a href="index.html">Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Notification Panel -->
+  <div class="notification-panel" id="notificationPanel">
+    <h2>Notifications</h2>
+    <ul id="notificationList">
+      <li>New agent registration pending approval</li>
+      <li>Bundle discount applied successfully</li>
+      <li>System update scheduled for tonight</li>
+    </ul>
+    <label class="sound-toggle">
+      <input type="checkbox" id="soundToggle" checked>
+      Enable Sound Alerts
+    </label>
+    <button id="markAllRead">Mark all as read</button>
+    <button id="closeNotifications">Close</button>
+  </div>
+
+  <!-- Toast Popup -->
+  <div class="toast" id="toast"></div>
+  <main class="main-content">
+    <h1>Agent Performance</h1>
+    <section class="performance-section">
+      <div class="performance-filters">
+        <label>Date Range:
+          <input type="date" id="filterStartDate"> -
+          <input type="date" id="filterEndDate">
+        </label>
+        <label>Agent:
+          <select id="filterAgent"><option value="">All</option></select>
+        </label>
+        <button id="exportCSVBtn" class="cta-btn">Export CSV</button>
+      </div>
+      <div class="performance-summary">
+        <div class="summary-item"><span>Total Sales:</span> <strong id="summaryTotalSales">0</strong></div>
+        <div class="summary-item"><span>Total Revenue:</span> <strong id="summaryTotalRevenue">₵0.00</strong></div>
+        <div class="summary-item"><span>Average Sale:</span> <strong id="summaryAvgSale">₵0.00</strong></div>
+        <div class="summary-item"><span>Top Bundle:</span> <strong id="summaryTopBundle">-</strong></div>
+      </div>
+      <h2>Performance Analytics</h2>
+      <canvas id="agentPerformanceChart" height="120"></canvas>
+      <table class="performance-table">
+        <thead>
+          <tr><th>Agent</th><th>Sales</th><th>Revenue</th><th>Rating</th></tr>
+        </thead>
+        <tbody id="agentPerformanceTableBody">
+          <!-- Populated by JS -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <script src="js/chart.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    requireAuth(['admin']);
+    document.addEventListener('DOMContentLoaded', wireLogout);
+    // Prevent back navigation after logout
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, '', window.location.href);
+      window.onpopstate = function() {
+        window.history.pushState(null, '', window.location.href);
+      };
+    }
+  </script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
