@@ -1,8 +1,7 @@
 
-// Handles Paystack and Stripe payment initiation and webhook verification
+// Handles Paystack payment initiation and webhook verification
 
-// Load Stripe from environment variable
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 
 const axios = require('axios');
 
