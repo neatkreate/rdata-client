@@ -20,12 +20,14 @@ function ensureDefaultAdmin() {
       password: crypto.createHash('sha256').update(adminPassword).digest('hex'),
       renewalDate: futureDate.toISOString(),
       paid: true,
-      isAdmin: true
+      isAdmin: true,
+      role: 'admin'
     };
     users.push(admin);
   } else {
     admin.renewalDate = futureDate.toISOString();
     admin.paid = true;
+    admin.role = 'admin';
   }
   return admin;
 }
