@@ -102,7 +102,28 @@ markAllRead.addEventListener('click', () => {
   list.innerHTML = "<li>No new notifications</li>";
 });
 
-// --- Real-time notification simulation ---
+// --- Fetch real notifications from backend ---
+async function fetchNotifications() {
+  try {
+    const res = await fetch('/api/admin/notifications');
+    const data = await res.json();
+    renderNotifications(data.notifications);
+  } catch (err) {
+    console.error('Failed to fetch notifications:', err);
+  }
+}
+
+function renderNotifications(notifications) {
+  const list = notificationPanel.querySelector('ul');
+  if (!list) return;
+  list.innerHTML = notifications.length
+    ? notifications.map(n => `<li>${n.message} <span style="font-size:0.8em;color:#888;">(${n.date})</span></li>`).join('')
+    : '<li>No notifications</li>';
+  notificationCount.textContent = notifications.length;
+  notificationCount.style.display = notifications.length ? 'inline-block' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', fetchNotifications);
 // --- Admin Navbar Links ---
 const adminNavbarLinks = [
   { name: 'Dashboard', href: 'dashboard.html' },
@@ -148,11 +169,19 @@ const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
 const searchUsers = document.getElementById('searchUsers');
 const filterRole = document.getElementById('filterRole');
 
-let users = JSON.parse(localStorage.getItem('admin_users')) || [
-  {id: 1, name: 'Kojo Mensah', email: 'kojo@example.com', role: 'agent', status: 'Pending'},
-  {id: 2, name: 'Akua Serwaa', email: 'akua@example.com', role: 'admin', status: 'Active'},
-  {id: 3, name: 'Yaw Boateng', email: 'yawb@example.com', role: 'viewer', status: 'Suspended'}
-];
+// --- Fetch real users from backend ---
+let users = [];
+async function fetchUsers() {
+  try {
+    const res = await fetch('/api/admin/users');
+    const data = await res.json();
+    users = data.users || [];
+    renderUsers();
+  } catch (err) {
+    console.error('Failed to fetch users:', err);
+  }
+}
+document.addEventListener('DOMContentLoaded', fetchUsers);
 let editingUserId = null;
 
 function saveUsers() {
@@ -298,7 +327,34 @@ filterRole && filterRole.addEventListener('change', renderUsers);
 // Initial render
 if (userTableBody) renderUsers();
 
-// --- Analytics & Reports Charts ---
+// --- Fetch real dashboard stats from backend ---
+async function fetchDashboardStats() {
+  try {
+    const res = await fetch('/api/admin/stats');
+    const stats = await res.json();
+    renderDashboardStats(stats);
+  } catch (err) {
+    console.error('Failed to fetch dashboard stats:', err);
+  }
+}
+
+function renderDashboardStats(stats) {
+  // Example: update dashboard stat elements
+  const agentCount = document.getElementById('statTotalAgents');
+  const adminCount = document.getElementById('statTotalAdmins');
+  const userCount = document.getElementById('statTotalUsers');
+  const salesCount = document.getElementById('statTotalSales');
+  const revenueCount = document.getElementById('statTotalRevenue');
+  const bundlesCount = document.getElementById('statBundlesSold');
+  if (agentCount) agentCount.textContent = stats.totalAgents;
+  if (adminCount) adminCount.textContent = stats.totalAdmins;
+  if (userCount) userCount.textContent = stats.totalUsers;
+  if (salesCount) salesCount.textContent = stats.totalSales;
+  if (revenueCount) revenueCount.textContent = stats.totalRevenue;
+  if (bundlesCount) bundlesCount.textContent = stats.bundlesSold;
+}
+
+document.addEventListener('DOMContentLoaded', fetchDashboardStats);
 // --- Role & Permission Control Logic ---
 
 // --- System Logs Logic ---
@@ -558,16 +614,7 @@ function showToast(message) {
 }
 
 // Example: simulate new notifications every 10 seconds
-setInterval(() => {
-  const messages = [
-    "New agent signed up",
-    "Bundle purchase completed",
-    "System alert: maintenance scheduled",
-    "Commission report ready"
-  ];
-  const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-  addNotification(randomMessage);
-}, 10000);
+// Removed random notification simulation
 
 // Save sound preference
 soundToggle.addEventListener('change', () => {
