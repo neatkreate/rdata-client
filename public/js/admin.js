@@ -214,10 +214,11 @@ function renderUsers() {
           <option value="viewer" ${u.role==='viewer'?'selected':''}>Viewer</option>
         </select>
       </td>
-      <td>${u.status}</td>
+      <td>${u.status || (u.paid ? 'Active' : 'Pending') }</td>
       <td>
         <button class="edit-btn" data-id="${u.id}">Edit</button>
         <button class="delete-btn" data-id="${u.id}">Delete</button>
+        ${u.role === 'agent' && !u.paid ? `<button class="approve-btn" data-id="${u.id}">Approve</button>` : ''}
       </td>
     </tr>
   `).join('');
@@ -266,7 +267,7 @@ userForm && userForm.addEventListener('submit', e => {
   closeModal();
 });
 
-userTableBody && userTableBody.addEventListener('click', e => {
+userTableBody && userTableBody.addEventListener('click', async e => {
   if (e.target.classList.contains('edit-btn')) {
     openUserModal(Number(e.target.getAttribute('data-id')));
   } else if (e.target.classList.contains('delete-btn')) {
@@ -275,6 +276,20 @@ userTableBody && userTableBody.addEventListener('click', e => {
     saveUsers();
     renderUsers();
     showToast('User deleted');
+  } else if (e.target.classList.contains('approve-btn')) {
+    const id = Number(e.target.getAttribute('data-id'));
+    try {
+      const res = await fetch(`/api/admin/approve-payment/${id}`, { method: 'POST' });
+      const data = await res.json();
+      if (data.status === 'success') {
+        showToast('Agent approved!');
+        fetchUsers();
+      } else {
+        showToast(data.error || 'Approval failed');
+      }
+    } catch (err) {
+      showToast('Approval failed');
+    }
   }
 });
 
@@ -346,12 +361,14 @@ function renderDashboardStats(stats) {
   const salesCount = document.getElementById('statTotalSales');
   const revenueCount = document.getElementById('statTotalRevenue');
   const bundlesCount = document.getElementById('statBundlesSold');
-  if (agentCount) agentCount.textContent = stats.totalAgents;
-  if (adminCount) adminCount.textContent = stats.totalAdmins;
-  if (userCount) userCount.textContent = stats.totalUsers;
-  if (salesCount) salesCount.textContent = stats.totalSales;
-  if (revenueCount) revenueCount.textContent = stats.totalRevenue;
-  if (bundlesCount) bundlesCount.textContent = stats.bundlesSold;
+    if (agentCount) agentCount.textContent = stats.totalAgents || 0;
+    if (bundlesCount) bundlesCount.textContent = stats.bundlesSold || 0;
+    if (salesCount) salesCount.textContent = stats.totalSales ? `₵${stats.totalSales}` : '₵0';
+    const pendingApprovals = document.getElementById('statPendingApprovals');
+    if (pendingApprovals) pendingApprovals.textContent = stats.pendingApprovals || 0;
+    if (adminCount) adminCount.textContent = stats.totalAdmins || 0;
+    if (userCount) userCount.textContent = stats.totalUsers || 0;
+    if (revenueCount) revenueCount.textContent = stats.totalRevenue || 0;
 }
 
 document.addEventListener('DOMContentLoaded', fetchDashboardStats);

@@ -36,4 +36,19 @@ router.get('/users', (req, res) => {
   res.json({ users });
 });
 
+// Approve agent payment (set paid=true and update renewalDate)
+router.post('/approve-payment/:userId', (req, res) => {
+  const userModel = require('../models/user');
+  const users = userModel.loadUsers();
+  const user = users.find(u => u.id == req.params.userId);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  user.paid = true;
+  // Set renewalDate to one year from today
+  const nextYear = new Date();
+  nextYear.setFullYear(nextYear.getFullYear() + 1);
+  user.renewalDate = nextYear.toISOString();
+  userModel.saveUsers(users);
+  res.json({ status: 'success', user });
+});
+
 module.exports = router;

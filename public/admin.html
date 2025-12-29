@@ -50,8 +50,7 @@
   <div class="notification-panel" id="notificationPanel">
     <h2>Notifications</h2>
     <ul id="notificationList">
-      <li>New agent registration pending approval</li>
-      <li>System update scheduled for tonight</li>
+      <!-- Populated by JS -->
     </ul>
     <label class="sound-toggle">
       <input type="checkbox" id="soundToggle" checked>
@@ -188,10 +187,10 @@
 
     <!-- Stats Cards -->
     <section class="stats">
-      <div class="card"><h3>Total Agents</h3><p>250</p></div>
-      <div class="card"><h3>Active Bundles</h3><p>15</p></div>
-      <div class="card"><h3>Total Sales</h3><p>₵120,000</p></div>
-      <div class="card"><h3>Pending Approvals</h3><p>12</p></div>
+      <div class="card"><h3>Total Agents</h3><p id="statTotalAgents">0</p></div>
+      <div class="card"><h3>Active Bundles</h3><p id="statBundlesSold">0</p></div>
+      <div class="card"><h3>Total Sales</h3><p id="statTotalSales">₵0</p></div>
+      <div class="card"><h3>Pending Approvals</h3><p id="statPendingApprovals">0</p></div>
     </section>
 
     <!-- Agent Management -->
