@@ -315,11 +315,29 @@ function getSelectedUserIds() {
 }
 
 bulkApproveBtn && bulkApproveBtn.addEventListener('click', () => {
+bulkApproveBtn && bulkApproveBtn.addEventListener('click', async () => {
   const ids = getSelectedUserIds();
-  users.forEach(u => { if (ids.includes(u.id)) u.status = 'Active'; });
-  saveUsers();
-  renderUsers();
-  showToast('Selected users approved');
+  if (!ids.length) {
+    showToast('No users selected');
+    return;
+  }
+  let successCount = 0;
+  for (const id of ids) {
+    try {
+      const res = await fetch(`/api/admin/approve-payment/${id}`, { method: 'POST' });
+      const data = await res.json();
+      if (data.status === 'success') {
+        successCount++;
+      }
+    } catch (err) {}
+  }
+  if (successCount) {
+    showToast(`Approved ${successCount} user(s)`);
+    fetchUsers();
+  } else {
+    showToast('No users approved');
+  }
+});
 });
 bulkSuspendBtn && bulkSuspendBtn.addEventListener('click', () => {
   const ids = getSelectedUserIds();
