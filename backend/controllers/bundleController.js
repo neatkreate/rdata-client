@@ -50,3 +50,20 @@ exports.checkOrderStatus = async (req, res) => {
     res.status(500).json({ status: 'error', error: error.response?.data || error.message });
   }
 };
+
+
+// List available bundles from Smartdatalink API
+exports.listBundles = async (req, res) => {
+  try {
+    // Example endpoint for Smartdatalink bundles (replace with real endpoint if different)
+    const response = await axios.get('https://blessdatahub.com/api/list_bundles.php', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${SMARTDATALINK_API_KEY}`
+      }
+    });
+    res.json({ status: 'success', data: response.data });
+  } catch (error) {
+    res.status(500).json({ status: 'error', error: error.response?.data || error.message });
+  }
+};

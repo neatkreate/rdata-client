@@ -7,7 +7,7 @@ async function getCurrentAgent() {
   try {
     const auth = JSON.parse(localStorage.getItem('rdata_auth'));
     if (!auth || !auth.user || auth.role !== 'agent') return null;
-    const res = await fetch(`/api/agents/profile?email=${encodeURIComponent(auth.user.email)}`);
+    const res = await fetch(`/api/auth/agent/profile?email=${encodeURIComponent(auth.user.email)}`);
     if (!res.ok) return null;
     const data = await res.json();
     return data.user || null;
