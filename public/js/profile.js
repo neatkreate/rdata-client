@@ -3,17 +3,41 @@
 ------------------------------------------*/
 
 // Load agent profile from backend API
+
 async function getCurrentAgent() {
   try {
     const auth = JSON.parse(localStorage.getItem('rdata_auth'));
     if (!auth || !auth.user || auth.role !== 'agent') return null;
-    const res = await fetch(`/api/auth/agent/profile?email=${encodeURIComponent(auth.user.email)}`);
-    if (!res.ok) return null;
+    const url = `/api/auth/agent/profile?email=${encodeURIComponent(auth.user.email)}`;
+    console.log('Fetching profile:', url);
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.error('Profile fetch failed:', res.status, res.statusText);
+      showProfileError('Profile fetch failed: ' + res.status + ' ' + res.statusText);
+      return null;
+    }
     const data = await res.json();
+    if (!data.user) {
+      showProfileError('No user data returned from backend.');
+    }
     return data.user || null;
-  } catch {
+  } catch (err) {
+    console.error('Profile fetch error:', err);
+    showProfileError('Profile fetch error: ' + err.message);
     return null;
   }
+}
+
+function showProfileError(msg) {
+  let errDiv = document.getElementById('profile-error');
+  if (!errDiv) {
+    errDiv = document.createElement('div');
+    errDiv.id = 'profile-error';
+    errDiv.style.color = 'red';
+    errDiv.style.margin = '1em 0';
+    document.body.prepend(errDiv);
+  }
+  errDiv.textContent = msg;
 }
 
 let profileData = {

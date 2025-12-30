@@ -13,7 +13,12 @@ function isVerifiedAgent() {
 
 function loadBundles() {
   fetch('/api/bundles')
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Bundles fetch failed: ' + res.status + ' ' + res.statusText);
+      }
+      return res.json();
+    })
     .then(result => {
       const bundles = result.data || [];
       const container = document.getElementById('bundles-section');
@@ -33,6 +38,11 @@ function loadBundles() {
       });
       html += '</div>';
       container.innerHTML = html;
+    })
+    .catch(err => {
+      const container = document.getElementById('bundles-section');
+      container.innerHTML = `<p style="color:red;">${err.message}</p>`;
+      console.error('Bundles fetch error:', err);
     });
 }
 
