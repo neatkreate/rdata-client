@@ -180,3 +180,14 @@ function showToast(message) {
     toast.classList.remove("show");
   }, 2500);
 }
+
+// Show bundles link if agent just logged in or if showBundles param is present
+function maybeShowBundlesLink() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('showBundles') === '1') {
+    const bundlesLinkSection = document.getElementById('bundles-link-section');
+    if (bundlesLinkSection) bundlesLinkSection.style.display = 'block';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', maybeShowBundlesLink);

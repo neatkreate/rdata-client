@@ -130,7 +130,13 @@ function wireLoginForm() {
     try {
       const data = await loginApi({ email, password, role });
       setAuth(data);
-      window.location.href = role === 'admin' ? 'admin.html' : 'profile.html';
+      if (role === 'admin') {
+        window.location.href = 'admin.html';
+      } else if (role === 'agent') {
+        window.location.href = 'profile.html?showBundles=1';
+      } else {
+        window.location.href = 'profile.html';
+      }
     } catch (err) {
       alert(err.message || 'Login failed');
     }
