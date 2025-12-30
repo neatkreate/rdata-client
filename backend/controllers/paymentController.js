@@ -41,13 +41,23 @@ exports.initiatePaystack = async (req, res) => {
 };
 
 // Paystack webhook handler
+const userModel = require('../models/user');
 exports.paystackWebhook = async (req, res) => {
   const event = req.body;
 
   // Optionally verify signature here for security
   if (event.event === 'charge.success') {
-    // TODO: Mark user as paid for the year, update renewal date
-    // event.data contains transaction details
+    // Mark user as paid for the year, update renewal date
+    const email = event.data.customer.email;
+    let users = userModel.loadUsers();
+    const user = users.find(u => u.email === email);
+    if (user) {
+      user.paid = true;
+      const nextYear = new Date();
+      nextYear.setFullYear(nextYear.getFullYear() + 1);
+      user.renewalDate = nextYear.toISOString();
+      userModel.saveUsers(users);
+    }
     res.sendStatus(200);
   } else {
     res.sendStatus(200);
