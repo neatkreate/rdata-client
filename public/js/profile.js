@@ -2,22 +2,21 @@
    PROFILE PAGE — JAVASCRIPT LOGIC
 ------------------------------------------*/
 
-// ✅ SAFER: Load agent profile from localStorage
-function getCurrentAgent() {
+// Load agent profile from backend API
+async function getCurrentAgent() {
   try {
     const auth = JSON.parse(localStorage.getItem('rdata_auth'));
     if (!auth || !auth.user || auth.role !== 'agent') return null;
-
-    const users = JSON.parse(localStorage.getItem('rdata_users') || '[]');
-    return users.find(u => u.email === auth.user.email) || null;
-
+    const res = await fetch(`/api/agents/profile?email=${encodeURIComponent(auth.user.email)}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.user || null;
   } catch {
     return null;
   }
 }
 
-// ✅ Load profile data safely
-let profileData = getCurrentAgent() || {
+let profileData = {
   name: '',
   email: '',
   phone: '',

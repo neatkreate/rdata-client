@@ -12,9 +12,10 @@ function isVerifiedAgent() {
 }
 
 function loadBundles() {
-  fetch('data/bundles.json')
+  fetch('/api/bundles')
     .then(res => res.json())
-    .then(bundles => {
+    .then(result => {
+      const bundles = result.data || [];
       const container = document.getElementById('bundles-section');
       if (!Array.isArray(bundles) || bundles.length === 0) {
         container.innerHTML = '<p>No bundles available at this time.</p>';
@@ -23,11 +24,11 @@ function loadBundles() {
       let html = '<h2>Available Bundles</h2><div class="bundles-list">';
       bundles.forEach(b => {
         html += `<div class="bundle-card">
-          <h3>${b.name}</h3>
-          <p>Network: ${b.network}</p>
-          <p>Data: ${b.data}</p>
-          <p>Price: GHS ${b.price}</p>
-          <button class="buy-bundle-btn" data-id="${b.id}">Sell to Customer</button>
+          <h3>${b.name || b.bundle_name || 'Bundle'}</h3>
+          <p>Network: ${b.network || b.provider || ''}</p>
+          <p>Data: ${b.data || b.size || ''}</p>
+          <p>Price: GHS ${b.price || b.amount || ''}</p>
+          <button class="buy-bundle-btn" data-id="${b.id || b.bundle_id || ''}">Sell to Customer</button>
         </div>`;
       });
       html += '</div>';

@@ -67,3 +67,13 @@ exports.renewalStatus = async (req, res) => {
   }
   res.json({ status: 'success', renewalDue, renewalDate: user.renewalDate, paid: user.paid });
 };
+
+// Get agent profile by email
+exports.getAgentProfile = async (req, res) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ error: 'Email required' });
+  const users = userModel.loadUsers();
+  const user = users.find(u => u.email === email && u.role === 'agent');
+  if (!user) return res.status(404).json({ error: 'Agent not found' });
+  res.json({ user });
+};
