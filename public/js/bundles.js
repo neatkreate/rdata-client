@@ -43,7 +43,7 @@ async function loadBundlesIfVerified() {
           <p>Network: ${b.network || b.provider || ''}</p>
           <p>Data: ${b.data || b.size || ''}</p>
           <p>Price: GHS ${b.price || b.amount || ''}</p>
-          <button class="buy-bundle-btn" data-id="${b.id || b.bundle_id || ''}">Sell to Customer</button>
+          <button class="buy-bundle-btn" data-id="${b.id || b.bundle_id || ''}" data-network="${b.network || ''}" data-size="${b.data || b.size || ''}">Sell to Customer</button>
         </div>`;
       });
       html += '</div>';
@@ -58,4 +58,38 @@ async function loadBundlesIfVerified() {
 document.addEventListener('DOMContentLoaded', function() {
   loadBundlesIfVerified();
   document.getElementById('bundles-section').style.display = 'block';
+
+  // Delegate click for buy-bundle-btn
+  document.getElementById('bundles-section').addEventListener('click', async function(e) {
+    if (e.target.classList.contains('buy-bundle-btn')) {
+      const btn = e.target;
+      const bundleId = btn.getAttribute('data-id');
+      const network = btn.getAttribute('data-network');
+      const size = btn.getAttribute('data-size');
+      const beneficiary = prompt(`Enter customer phone number for ${network} ${size}:`);
+      if (!beneficiary || !/^0[2357][0-9]{8}$/.test(beneficiary)) {
+        alert('Please enter a valid Ghana phone number.');
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+      try {
+        const res = await fetch('/api/bundles/purchase', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ beneficiary, package_size: size })
+        });
+        const result = await res.json();
+        if (result.status === 'success') {
+          alert('Bundle purchase successful!');
+        } else {
+          alert('Purchase failed: ' + (result.error || 'Unknown error'));
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+      btn.disabled = false;
+      btn.textContent = 'Sell to Customer';
+    }
+  });
 });
