@@ -224,12 +224,24 @@ function showToast(message) {
 }
 
 // Show bundles link if agent just logged in or if showBundles param is present
-function maybeShowBundlesLink() {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('showBundles') === '1') {
-    const bundlesLinkSection = document.getElementById('bundles-link-section');
-    if (bundlesLinkSection) bundlesLinkSection.style.display = 'block';
+
+function showBundlesSection() {
+  const bundlesSection = document.getElementById('bundles-section');
+  if (bundlesSection) {
+    bundlesSection.classList.remove('bundles-section-hidden');
+    bundlesSection.scrollIntoView({ behavior: 'smooth' });
   }
 }
 
-document.addEventListener('DOMContentLoaded', maybeShowBundlesLink);
+document.addEventListener('DOMContentLoaded', function() {
+  // Show the Sell Bundles button if agent is logged in
+  const auth = JSON.parse(localStorage.getItem('rdata_auth'));
+  if (auth && auth.user && auth.role === 'agent') {
+    const bundlesLinkSection = document.getElementById('bundles-link-section');
+    if (bundlesLinkSection) bundlesLinkSection.style.display = 'block';
+    const showBundlesBtn = document.getElementById('show-bundles-btn');
+    if (showBundlesBtn) {
+      showBundlesBtn.addEventListener('click', showBundlesSection);
+    }
+  }
+});
