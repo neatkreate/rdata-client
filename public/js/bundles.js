@@ -1,17 +1,24 @@
 // Bundles display logic for verified agents
 
-function isVerifiedAgent() {
+
+async function isVerifiedAgent() {
   try {
     const auth = JSON.parse(localStorage.getItem('rdata_auth'));
     if (!auth || !auth.user || auth.role !== 'agent') return false;
-    // Find full user info from rdata_users
-    const users = JSON.parse(localStorage.getItem('rdata_users') || '[]');
-    const user = users.find(u => u.email === auth.user.email);
-    return user && user.verified === true;
+    const res = await fetch(`/api/auth/agent/profile?email=${encodeURIComponent(auth.user.email)}`);
+    if (!res.ok) return false;
+    const data = await res.json();
+    return data.user && data.user.isVerified === true;
   } catch { return false; }
 }
 
-function loadBundles() {
+async function loadBundlesIfVerified() {
+  const verified = await isVerifiedAgent();
+  const container = document.getElementById('bundles-section');
+  if (!verified) {
+    container.innerHTML = '<p style="color:red;">You are not approved by admin yet. Please wait for approval.</p>';
+    return;
+  }
   fetch('/api/bundles')
     .then(res => {
       if (!res.ok) {
@@ -21,7 +28,6 @@ function loadBundles() {
     })
     .then(result => {
       const bundles = result.data || [];
-      const container = document.getElementById('bundles-section');
       if (!Array.isArray(bundles) || bundles.length === 0) {
         container.innerHTML = '<p>No bundles available at this time.</p>';
         return;
@@ -40,17 +46,12 @@ function loadBundles() {
       container.innerHTML = html;
     })
     .catch(err => {
-      const container = document.getElementById('bundles-section');
       container.innerHTML = `<p style="color:red;">${err.message}</p>`;
       console.error('Bundles fetch error:', err);
     });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  if (isVerifiedAgent()) {
-    loadBundles();
-    document.getElementById('bundles-section').style.display = 'block';
-  } else {
-    document.getElementById('bundles-section').style.display = 'none';
-  }
+  loadBundlesIfVerified();
+  document.getElementById('bundles-section').style.display = 'block';
 });

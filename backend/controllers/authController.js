@@ -42,6 +42,10 @@ exports.login = async (req, res) => {
   if (!user) return res.status(404).json({ error: 'User not found' });
   const hashed = crypto.createHash('sha256').update(password).digest('hex');
   if (user.password !== hashed) return res.status(401).json({ error: 'Invalid password' });
+  // Only allow login if agent is approved (isVerified === true)
+  if (user.role === 'agent' && !user.isVerified) {
+    return res.status(403).json({ error: 'Agent not approved by admin yet.' });
+  }
   // Check renewal
   const now = new Date();
   let renewalDue = true;

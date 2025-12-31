@@ -58,6 +58,18 @@ const emailInput = document.getElementById("profile-email");
 const phoneInput = document.getElementById("profile-phone");
 const agentIdInput = document.getElementById("profile-agent-id");
 
+// Logout button logic
+const logoutBtn = document.getElementById("logoutBtn");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    if (confirm("Are you sure you want to log out?")) {
+      localStorage.removeItem("rdata_auth");
+      window.location.href = "index.html";
+    }
+  });
+}
+
 let createdInput = document.getElementById("profile-created");
 if (!createdInput && agentIdInput) {
   const regDateLabel = document.createElement("label");
