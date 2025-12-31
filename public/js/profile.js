@@ -101,36 +101,42 @@ Object.values(sounds).forEach(s => s.volume = 0.25);
 // -----------------------------------------
 // LOAD PROFILE DATA
 // -----------------------------------------
-function loadProfile() {
+async function loadProfile() {
   const auth = JSON.parse(localStorage.getItem("rdata_auth"));
-
-  // ✅ Safe redirect (no loops)
   if (!auth || !auth.user || auth.role !== "agent") {
     window.location.replace("login.html");
     return;
   }
-
-  nameInput.value = profileData.name;
-  emailInput.value = profileData.email;
-  phoneInput.value = profileData.phone;
-
-  agentIdInput.value =
-    profileData.agentId ||
-    (profileData.email
-      ? "AGT-" +
-        profileData.email.replace(/[^a-zA-Z0-9]/g, "").slice(-6).toUpperCase()
-      : "");
-
-  profilePhoto.src = profileData.photo || "assets/default-avatar.png";
-
-  if (createdInput) {
-    createdInput.value = profileData.created
-      ? new Date(profileData.created).toLocaleDateString()
-      : "";
+  // Fetch agent details from backend
+  try {
+    const res = await fetch(`/api/auth/agent/profile?email=${encodeURIComponent(auth.user.email)}`);
+    if (!res.ok) {
+      showProfileError('Failed to fetch agent profile.');
+      return;
+    }
+    const data = await res.json();
+    if (!data.user) {
+      showProfileError('No agent data found.');
+      return;
+    }
+    // Fill profile fields
+    nameInput.value = data.user.name || '';
+    emailInput.value = data.user.email || '';
+    phoneInput.value = data.user.phone || '';
+    agentIdInput.value = data.user.agentId || (data.user.email ? "AGT-" + data.user.email.replace(/[^a-zA-Z0-9]/g, "").slice(-6).toUpperCase() : '');
+    if (createdInput) {
+      createdInput.value = data.user.created ? new Date(data.user.created).toLocaleDateString() : '';
+    }
+    // Optionally show photo if available
+    profilePhoto.src = data.user.photo || "assets/default-avatar.png";
+    // Save to profileData for other uses
+    profileData = { ...profileData, ...data.user };
+  } catch (err) {
+    showProfileError('Error loading profile: ' + err.message);
   }
 }
 
-loadProfile();
+document.addEventListener('DOMContentLoaded', loadProfile);
 
 // -----------------------------------------
 // UPDATE PROFILE PHOTO

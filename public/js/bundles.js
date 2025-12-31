@@ -20,11 +20,15 @@ async function loadBundlesIfVerified() {
     return;
   }
   fetch('/api/bundles')
-    .then(res => {
+    .then(async res => {
       if (!res.ok) {
         throw new Error('Bundles fetch failed: ' + res.status + ' ' + res.statusText);
       }
-      return res.json();
+      try {
+        return await res.json();
+      } catch (jsonErr) {
+        throw new Error('Bundles API returned invalid data.');
+      }
     })
     .then(result => {
       const bundles = result.data || [];
