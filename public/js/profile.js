@@ -225,10 +225,18 @@ function showToast(message) {
 
 // Show bundles link if agent just logged in or if showBundles param is present
 
+
 function showBundlesSection() {
   const bundlesSection = document.getElementById('bundles-section');
   if (bundlesSection) {
     bundlesSection.classList.remove('bundles-section-hidden');
+    bundlesSection.style.display = 'block';
+    // If bundles are not loaded, load them
+    if (!bundlesSection.innerHTML.trim()) {
+      if (typeof loadBundlesIfVerified === 'function') {
+        loadBundlesIfVerified();
+      }
+    }
     bundlesSection.scrollIntoView({ behavior: 'smooth' });
   }
 }
