@@ -1,3 +1,14 @@
+/* Bundles Section Hidden/Visible */
+#bundles-section.bundles-section-hidden {
+  display: none;
+}
+#bundles-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f8faff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
 /* Navbar Styles (copied from login.css) */
 .header {
   display: flex;
