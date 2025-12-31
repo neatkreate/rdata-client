@@ -54,20 +54,23 @@ exports.checkOrderStatus = async (req, res) => {
 
 // List available bundles from Smartdatalink API
 exports.listBundles = async (req, res) => {
-  // Hardcoded bundles for all networks and sizes
-  const bundles = [
-    { id: 1, network: 'MTN', data: '1GB', price: 4.50 },
-    { id: 2, network: 'MTN', data: '2GB', price: 9.00 },
-    { id: 3, network: 'MTN', data: '4GB', price: 18.00 },
-    { id: 4, network: 'MTN', data: '10GB', price: 42.00 },
-    { id: 5, network: 'Telecel', data: '1GB', price: 4.50 },
-    { id: 6, network: 'Telecel', data: '2GB', price: 9.00 },
-    { id: 7, network: 'Telecel', data: '4GB', price: 18.00 },
-    { id: 8, network: 'Telecel', data: '10GB', price: 42.00 },
-    { id: 9, network: 'AirtelTigo', data: '1GB', price: 4.50 },
-    { id: 10, network: 'AirtelTigo', data: '2GB', price: 9.00 },
-    { id: 11, network: 'AirtelTigo', data: '4GB', price: 18.00 },
-    { id: 12, network: 'AirtelTigo', data: '10GB', price: 42.00 }
-  ];
-  res.json({ status: 'success', data: bundles });
+  try {
+    const bundles = [
+      { id: 1, network: 'MTN', data: '1GB', price: 4.50 },
+      { id: 2, network: 'MTN', data: '2GB', price: 9.00 },
+      { id: 3, network: 'MTN', data: '4GB', price: 18.00 },
+      { id: 4, network: 'MTN', data: '10GB', price: 42.00 },
+      { id: 5, network: 'Telecel', data: '1GB', price: 4.50 },
+      { id: 6, network: 'Telecel', data: '2GB', price: 9.00 },
+      { id: 7, network: 'Telecel', data: '4GB', price: 18.00 },
+      { id: 8, network: 'Telecel', data: '10GB', price: 42.00 },
+      { id: 9, network: 'AirtelTigo', data: '1GB', price: 4.50 },
+      { id: 10, network: 'AirtelTigo', data: '2GB', price: 9.00 },
+      { id: 11, network: 'AirtelTigo', data: '4GB', price: 18.00 },
+      { id: 12, network: 'AirtelTigo', data: '10GB', price: 42.00 }
+    ];
+    res.status(200).json({ status: 'success', data: bundles });
+  } catch (err) {
+    res.status(500).json({ status: 'error', data: [], error: err.message });
+  }
 };

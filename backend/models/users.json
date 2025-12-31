@@ -6,7 +6,7 @@
     "phone": "",
     "password": "fd50c265326fd156742df232bab0ec26f3eae5f3fe5c69dfd79f5f916c777967",
     "renewalDate": null,
-    "paid": false,
+    "paid": true,
     "role": "agent",
     "isVerified": true
   }
