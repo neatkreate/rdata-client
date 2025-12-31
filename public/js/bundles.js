@@ -31,10 +31,23 @@ async function loadBundlesIfVerified() {
       }
     })
     .then(result => {
-      const bundles = result.data || [];
+      let bundles = result.data || [];
       if (!Array.isArray(bundles) || bundles.length === 0) {
-        container.innerHTML = '<p>No bundles available at this time.</p>';
-        return;
+        // Fallback to hardcoded bundles
+        bundles = [
+          { id: 1, network: 'MTN', data: '1GB', price: 4.50 },
+          { id: 2, network: 'MTN', data: '2GB', price: 9.00 },
+          { id: 3, network: 'MTN', data: '4GB', price: 18.00 },
+          { id: 4, network: 'MTN', data: '10GB', price: 42.00 },
+          { id: 5, network: 'Telecel', data: '1GB', price: 4.50 },
+          { id: 6, network: 'Telecel', data: '2GB', price: 9.00 },
+          { id: 7, network: 'Telecel', data: '4GB', price: 18.00 },
+          { id: 8, network: 'Telecel', data: '10GB', price: 42.00 },
+          { id: 9, network: 'AirtelTigo', data: '1GB', price: 4.50 },
+          { id: 10, network: 'AirtelTigo', data: '2GB', price: 9.00 },
+          { id: 11, network: 'AirtelTigo', data: '4GB', price: 18.00 },
+          { id: 12, network: 'AirtelTigo', data: '10GB', price: 42.00 }
+        ];
       }
       let html = '<h2>Available Bundles</h2><div class="bundles-list">';
       bundles.forEach(b => {
@@ -50,7 +63,33 @@ async function loadBundlesIfVerified() {
       container.innerHTML = html;
     })
     .catch(err => {
-      container.innerHTML = `<p style="color:red;">${err.message}</p>`;
+      // Fallback to hardcoded bundles on error
+      const bundles = [
+        { id: 1, network: 'MTN', data: '1GB', price: 4.50 },
+        { id: 2, network: 'MTN', data: '2GB', price: 9.00 },
+        { id: 3, network: 'MTN', data: '4GB', price: 18.00 },
+        { id: 4, network: 'MTN', data: '10GB', price: 42.00 },
+        { id: 5, network: 'Telecel', data: '1GB', price: 4.50 },
+        { id: 6, network: 'Telecel', data: '2GB', price: 9.00 },
+        { id: 7, network: 'Telecel', data: '4GB', price: 18.00 },
+        { id: 8, network: 'Telecel', data: '10GB', price: 42.00 },
+        { id: 9, network: 'AirtelTigo', data: '1GB', price: 4.50 },
+        { id: 10, network: 'AirtelTigo', data: '2GB', price: 9.00 },
+        { id: 11, network: 'AirtelTigo', data: '4GB', price: 18.00 },
+        { id: 12, network: 'AirtelTigo', data: '10GB', price: 42.00 }
+      ];
+      let html = '<h2>Available Bundles</h2><div class="bundles-list">';
+      bundles.forEach(b => {
+        html += `<div class="bundle-card">
+          <h3>${b.name || b.bundle_name || 'Bundle'}</h3>
+          <p>Network: ${b.network || b.provider || ''}</p>
+          <p>Data: ${b.data || b.size || ''}</p>
+          <p>Price: GHS ${b.price || b.amount || ''}</p>
+          <button class="buy-bundle-btn" data-id="${b.id || b.bundle_id || ''}" data-network="${b.network || ''}" data-size="${b.data || b.size || ''}">Sell to Customer</button>
+        </div>`;
+      });
+      html += '</div>';
+      container.innerHTML = html;
       console.error('Bundles fetch error:', err);
     });
 }

@@ -88,15 +88,7 @@ const toast = document.getElementById("toast");
 // ✅ Disable email editing (prevents identity break)
 emailInput.disabled = true;
 
-// -----------------------------------------
-// SOUND EFFECTS
-// -----------------------------------------
-const sounds = {
-  save: new Audio("sounds/pop-open.mp3"),
-  error: new Audio("sounds/pop-close.mp3"),
-  upload: new Audio("sounds/bubble.mp3")
-};
-Object.values(sounds).forEach(s => s.volume = 0.25);
+
 
 // -----------------------------------------
 // LOAD PROFILE DATA
