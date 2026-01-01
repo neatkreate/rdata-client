@@ -25,9 +25,20 @@ exports.purchaseBundle = async (req, res) => {
         }
       }
     );
-    res.json({ status: 'success', data: response.data });
+    res.status(200).json({ status: 'success', data: response.data });
   } catch (error) {
-    res.status(500).json({ status: 'error', error: error.response?.data || error.message });
+    // Always return valid JSON error
+    let errMsg = error.message;
+    if (error.response && error.response.data) {
+      if (typeof error.response.data === 'string') {
+        errMsg = error.response.data;
+      } else if (error.response.data.error) {
+        errMsg = error.response.data.error;
+      } else {
+        errMsg = JSON.stringify(error.response.data);
+      }
+    }
+    res.status(500).json({ status: 'error', error: errMsg });
   }
 };
 
