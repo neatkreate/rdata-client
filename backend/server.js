@@ -14,6 +14,9 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/payment', require('./routes/payment'));
 app.use('/api/bundle', require('./routes/bundle'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api', require('./routes/dashboard'));
+app.use('/api/orders', require('./routes/orders'));
+app.use('/api', require('./routes/topup'));
 
 
 const path = require('path');
@@ -23,9 +26,14 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
-// Catch-all route to serve index.html for SPA routing
+// Landing page route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/login.html'));
+});
+
+// Catch-all route to serve login.html for any unknown route
 app.get(/.*/, (req, res) => {
-	res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../public/login.html'));
 });
 
 const PORT = process.env.PORT || 5000;

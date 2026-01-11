@@ -154,7 +154,6 @@ function wireSignupForm() {
     const email = document.getElementById('signupEmail').value.trim();
     const phone = document.getElementById('signupPhone').value.trim();
     const password = document.getElementById('signupPassword').value;
-    const fee = document.getElementById('signupFee').value;
     // Validate fields
     if (!name || !email || !phone || !password) {
       alert('Please fill in all fields.');
@@ -179,23 +178,9 @@ function wireSignupForm() {
       alert(err.error || 'Signup failed');
       return;
     }
-    // Initiate Paystack payment for registration fee
-    if (!window.confirm(`Proceed to pay registration fee of GHC ${fee}?`)) {
-      return;
-    }
-    // Call backend to initiate Paystack payment
-    const payRes = await fetch('/api/payment/paystack/initiate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, amount: fee })
-    });
-    const payData = await payRes.json();
-    if (payData.status !== 'success') {
-      alert('Payment initiation failed.');
-      return;
-    }
-    // Redirect to Paystack payment page
-    window.location.href = payData.data.data.authorization_url;
+    // Signup successful, redirect to login
+    alert('Signup successful! You can now log in.');
+    window.location.href = 'login.html';
   });
 }
 

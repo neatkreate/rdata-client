@@ -3,127 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - RData</title>
-
-  <!-- Shared Styles -->
-  <link rel="stylesheet" href="css/style.css">
-
-  <!-- Auth Styles -->
-  <link rel="stylesheet" href="css/auth.css">
+  <title>Login / Sign Up</title>
   <link rel="stylesheet" href="css/login.css">
 </head>
-
 <body>
-
-  <!-- Header (Matches Homepage) -->
-  <header class="header">
-    <div class="logo">RData</div>
-    <nav class="navbar">
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="login.html" class="active">Login</a></li>
-        <li><a href="api-docs.html">API Docs</a></li>
-        <li><a href="profile.html">Profile</a></li>
-        <li><a href="admin.html">Admin</a></li>
-      </ul>
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+  <main>
+    <section class="auth-container">
+      <div class="auth-tabs">
+        <div class="tab-header">
+          <button id="loginTab" class="tab-btn active">Login</button>
+          <button id="signupTab" class="tab-btn">Sign Up</button>
+        </div>
+        <div id="loginSection">
+          <form id="loginForm" class="login-form">
+            <label>Email Address
+              <input type="email" id="email" placeholder="you@example.com" required>
+            </label>
+            <label>Password
+              <input type="password" id="password" placeholder="••••••••" required>
+            </label>
+            <button type="submit" class="cta-btn">Login</button>
+          </form>
+        </div>
+        <div id="signupSection" style="display:none;">
+          <form id="signupForm" class="signup-form">
+            <label>Full Name
+              <input type="text" id="signupName" placeholder="Full Name" required>
+            </label>
+            <label>Email Address
+              <input type="email" id="signupEmail" placeholder="you@example.com" required>
+            </label>
+            <label>Phone Number
+              <input type="tel" id="signupPhone" placeholder="Mobile Number" required>
+            </label>
+            <label>Password
+              <input type="password" id="signupPassword" placeholder="Create Password" required>
+            </label>
+            <button type="submit" class="cta-btn">Sign Up</button>
+          </form>
+        </div>
       </div>
-    </nav>
-  </header>
-
-  <!-- Auth Container -->
-  <section class="auth-container">
-
-    <!-- Tabs -->
-    <div class="auth-tabs">
-      <div class="tab-header">
-        <button id="loginTab" class="tab-btn active">Login</button>
-        <button id="signupTab" class="tab-btn">Sign Up</button>
-      </div>
-
-      <!-- LOGIN SECTION -->
-      <div id="loginSection">
-        <form id="loginForm" class="login-form">
-
-          <label>Email Address
-            <input type="email" id="email" placeholder="you@example.com" required>
-          </label>
-
-          <label>Password
-            <input type="password" id="password" placeholder="••••••••" required>
-          </label>
-
-          <label>Role
-            <select id="role" required>
-              <option value="agent">Agent</option>
-              <option value="admin">Admin</option>
-            </select>
-          </label>
-
-          <label class="remember">
-            <input type="checkbox" id="rememberMe"> Remember Me
-          </label>
-
-          <button type="submit" class="cta-btn">Login</button>
-
-          <p class="alt-link"><a href="#">Forgot Password?</a></p>
-
-          <div class="social-login">
-            <button class="google-btn" type="button">Login with Google</button>
-            <button class="fb-btn" type="button">Login with Facebook</button>
-          </div>
-
-        </form>
-      </div>
-
-      <!-- SIGNUP SECTION -->
-      <div id="signupSection">
-        <form id="signupForm" class="signup-form">
-
-          <label>Full Name
-            <input type="text" id="signupName" placeholder="Full Name" required>
-          </label>
-
-          <label>Email Address
-            <input type="email" id="signupEmail" placeholder="you@example.com" required>
-          </label>
-
-          <label>Phone Number
-            <input type="tel" id="signupPhone" placeholder="Mobile Money Number" required>
-          </label>
-
-          <label>Password
-            <input type="password" id="signupPassword" placeholder="Create Password" required>
-          </label>
-
-          <label>Registration Fee
-            <input type="number" id="signupFee" value="100.00" readonly>
-          </label>
-
-          <button type="submit" class="cta-btn">Sign Up & Pay</button>
-
-          <p class="note">Registration fee applies.<br> GHC 100/yearly. <br>
-            Secure payment via Mobile Money/Paystack.</p>
-
-        </form>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>&copy; 2025 RData. All rights reserved.</p>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="js/main.js"></script>
-  <script src="js/auth.js"></script>
-
-  <!-- Tab Switching -->
+    </section>
+  </main>
+  <script src="js/login.js"></script>
   <script>
     const loginTab = document.getElementById('loginTab');
     const signupTab = document.getElementById('signupTab');
@@ -144,6 +66,5 @@
       loginSection.style.display = 'none';
     };
   </script>
-
 </body>
 </html>

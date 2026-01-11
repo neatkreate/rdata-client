@@ -344,6 +344,177 @@ body.compact-mode .page-header h1 {
   background: #0077ff;
 }
 
+/* Dashboard Styles */
+body {
+    font-family: Arial, sans-serif;
+    background: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.menu-icon {
+    font-size: 2rem;
+    cursor: pointer;
+}
+.user-icon {
+    width: 32px;
+    height: 32px;
+    background: #4caf50;
+    border-radius: 50%;
+    display: inline-block;
+}
+main {
+    max-width: 500px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 2rem;
+}
+#greeting {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.card {
+    background: #ffc107;
+    color: #222;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.card-value {
+    font-size: 1.3rem;
+    margin-top: 0.5rem;
+}
+#view-orders {
+    background: #fff;
+    color: #222;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+.buy-data-section {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 1.5rem 1rem;
+    margin-top: 2rem;
+}
+.buy-data-section h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+#buy-data-form label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+#buy-data-form select,
+#buy-data-form input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+}
+#buy-data, #top-up {
+    background: #f0cd67;
+    color: #222;
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+#buy-data:hover, #top-up:hover {
+    background: #e0a800;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: #fff;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+  min-width: 320px;
+  max-width: 90vw;
+  position: relative;
+}
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+}
+#topup-form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+#topup-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.cta-btn {
+  background: #ffc107;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.cta-btn:hover {
+  background: #e0a800;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .sidebar {

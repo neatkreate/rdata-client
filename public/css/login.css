@@ -170,91 +170,105 @@
 @import url('auth.css');
 
 body {
-  background: linear-gradient(120deg, #e0eaff 0%, #f7faff 100%);
+  background: linear-gradient(135deg, #f8f8f8 0%, #ffe082 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
   min-height: 100vh;
-  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.auth-container {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 370px;
 }
 
 .auth-tabs {
-  margin-top: 70px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.13);
-  border-radius: 16px;
-  background: #fff;
-  padding: 2.5rem 2.5rem 2rem 2.5rem;
-  transition: box-shadow 0.2s;
+  width: 100%;
 }
 
 .tab-header {
-  margin-bottom: 2.2rem;
-  gap: 1.2rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
 
 .tab-btn {
-  min-width: 130px;
-  font-size: 1.13rem;
-  border-radius: 8px 8px 0 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  transition: background 0.2s, color 0.2s;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #888;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-bottom 0.2s;
 }
 
-.login-form .cta-btn, .signup-form .cta-btn {
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  font-size: 1.08rem;
-  background: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
-  box-shadow: 0 2px 8px rgba(0,123,255,0.08);
-  border-radius: 6px;
-  margin-top: 1.5rem;
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.login-form .cta-btn:hover, .signup-form .cta-btn:hover {
-  background: linear-gradient(90deg, #0056b3 60%, #007bff 100%);
-  box-shadow: 0 4px 16px rgba(0,123,255,0.13);
+.tab-btn.active {
+  color: #222;
+  border-bottom: 2.5px solid #ffc107;
 }
 
-.login-form input, .signup-form input {
-  background: #f8faff;
-  border: 1.5px solid #dbeafe;
-  border-radius: 5px;
-  padding: 0.8rem 1rem;
-  font-size: 1.05rem;
-  margin-top: 0.4rem;
-  transition: border 0.2s, box-shadow 0.2s;
+.login-form, .signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
-.login-form input:focus, .signup-form input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 2px #cce3ff;
+
+label {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  padding: 0.7rem;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-top: 0.3rem;
+  background: #fafafa;
+  transition: border 0.2s;
+}
+
+input:focus {
+  border: 1.5px solid #ffc107;
   outline: none;
 }
 
-.login-form label, .signup-form label {
-  color: #333;
-  font-size: 1.04rem;
-  margin-bottom: 0.2rem;
+.cta-btn {
+  background: #ffc107;
+  color: #222;
+  border: none;
+  border-radius: 7px;
+  padding: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  transition: background 0.2s;
 }
 
-.signup-form .note {
-  color: #007bff;
-  font-size: 1.01rem;
-  margin-top: 0.7rem;
+.cta-btn:hover {
+  background: #e0a800;
 }
 
-/* Social login buttons */
-.social-login button {
-  border-radius: 5px;
-  font-size: 1.01rem;
-  margin-bottom: 0.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  .auth-tabs {
+@media (max-width: 500px) {
+  .auth-container {
     padding: 1.2rem 0.5rem;
-    margin-top: 30px;
-  }
-  .tab-btn {
-    padding: 0.7rem 1rem;
-    font-size: 1rem;
+    border-radius: 8px;
   }
 }

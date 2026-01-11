@@ -69,15 +69,6 @@
 
 
           <label>
-            Agent ID
-            <input type="text" id="profile-agent-id" disabled>
-          </label>
-
-          <label>
-            Registration Date
-            <input type="text" id="profile-created" disabled>
-          </label>
-
           <label>
             Change Password
             <input type="password" id="profile-password" placeholder="Enter new password">
@@ -90,12 +81,14 @@
 
       </div>
 
-      <!-- Bundles Section (only for verified agents) -->
-      <section id="bundles-section" class="bundles-section-hidden"></section>
+      <!-- Wallet Section -->
+      <section id="wallet-section">
+        <h2>Wallet Balance: <span id="wallet-balance">GHS 0.00</span></h2>
+        <button id="load-wallet-btn" class="cta-btn">Load Wallet</button>
+      </section>
 
-      <div id="bundles-link-section" style="margin: 1em 0; display: none;">
-        <button id="show-bundles-btn" class="cta-btn">Sell Bundles</button>
-      </div>
+      <!-- Bundles Section -->
+      <section id="bundles-section"></section>
 
     </section>
 

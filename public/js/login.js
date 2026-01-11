@@ -28,4 +28,56 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+
+  // Login form
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result.status === 'success') {
+          // Optionally store user info in localStorage/sessionStorage
+          window.location.href = 'dashboard.html';
+        } else {
+          alert(result.error || 'Login failed');
+        }
+      })
+      .catch(() => alert('Login error'));
+    });
+  }
+
+  // Signup form
+  const signupForm = document.getElementById('signupForm');
+  if (signupForm) {
+    signupForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const phone = document.getElementById('signupPhone').value;
+      const password = document.getElementById('signupPassword').value;
+      fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, password })
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result.status === 'success') {
+          alert('Signup successful! Please login.');
+          document.getElementById('loginTab').click();
+        } else {
+          alert(result.error || 'Signup failed');
+        }
+      })
+      .catch(() => alert('Signup error'));
+    });
+  }
 });
