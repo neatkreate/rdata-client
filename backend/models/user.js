@@ -39,7 +39,8 @@ function ensureDefaultAdmin() {
       renewalDate: futureDate.toISOString(),
       paid: true,
       isAdmin: true,
-      role: 'admin'
+      role: 'admin',
+      wallet: 0
     };
     users.push(admin);
     saveUsers(users);
@@ -70,5 +71,16 @@ module.exports = {
   loadUsers,
   saveUsers,
   ensureDefaultAdmin,
-  getDefaultAdminCredentials
+  getDefaultAdminCredentials,
+  // Add wallet update helper
+  creditWallet: function(email, amount) {
+    const users = loadUsers();
+    const user = users.find(u => u.email === email);
+    if (user) {
+      user.wallet = (user.wallet || 0) + amount;
+      saveUsers(users);
+      return true;
+    }
+    return false;
+  }
 };

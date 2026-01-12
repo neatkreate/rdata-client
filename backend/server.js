@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 
 
 // Routes
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/payment', require('./routes/payment'));
 app.use('/api/bundle', require('./routes/bundle'));
@@ -17,6 +18,8 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api', require('./routes/dashboard'));
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api', require('./routes/topup'));
+app.use('/api/paystack', require('./routes/paystack'));
+app.use('/api/paystack-webhook', require('./routes/paystack-webhook'));
 
 
 const path = require('path');
