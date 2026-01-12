@@ -128,14 +128,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fetch user dashboard data
-  fetch('/api/dashboard')
+    // Fetch user dashboard data (send email)
+    let userEmail = '';
+    try {
+    const auth = JSON.parse(localStorage.getItem('rdata_auth'));
+    userEmail = auth && auth.user && auth.user.email ? auth.user.email : '';
+    } catch {}
+    fetch('/api/dashboard?email=' + encodeURIComponent(userEmail))
       .then(res => res.json())
       .then(data => {
-          document.getElementById('greeting').textContent = `Good afternoon, ${data.name}`;
-          document.getElementById('balance').textContent = `₵${data.balance.toFixed(2)}`;
-          document.getElementById('todays-spent').textContent = `₵${data.todaysSpent.toFixed(2)}`;
-          document.getElementById('total-spent').textContent = `₵${data.totalSpent.toFixed(2)}`;
+        document.getElementById('greeting').textContent = `Good afternoon, ${data.name}`;
+        document.getElementById('balance').textContent = `₵${data.balance.toFixed(2)}`;
+        document.getElementById('todays-spent').textContent = `₵${data.todaysSpent.toFixed(2)}`;
+        document.getElementById('total-spent').textContent = `₵${data.totalSpent.toFixed(2)}`;
       });
 
   // Fetch available networks for Buy Data

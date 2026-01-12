@@ -14,11 +14,14 @@ const dataPlans = {
 };
 
 exports.getDashboard = (req, res) => {
-    // Replace with real user lookup
-    const user = users[0];
+    // Get user email from query, header, or session (for demo, use query or header)
+    const email = req.query.email || req.headers['x-user-email'];
+    if (!email) return res.status(400).json({ error: 'User email required' });
+    const user = users.find(u => u.email === email);
+    if (!user) return res.status(404).json({ error: 'User not found' });
     res.json({
         name: user.name || 'User',
-        balance: user.balance || 0,
+        balance: user.wallet || 0,
         todaysSpent: user.todaysSpent || 0,
         totalSpent: user.totalSpent || 0
     });
@@ -28,9 +31,19 @@ exports.getNetworks = (req, res) => {
     res.json(networks);
 };
 
-exports.getDataPlans = (req, res) => {
+const axios = require('axios');
+exports.getDataPlans = async (req, res) => {
     const network = req.query.network;
-    res.json(dataPlans[network] || []);
+    if (!network) return res.status(400).json({ error: 'Network required' });
+    try {
+        // Replace with your real SmartDataLink API URL and key
+        const apiUrl = `https://smartdatalink.com/api/data-plans?network=${encodeURIComponent(network)}`;
+        // Optionally add headers for authentication if required
+        const response = await axios.get(apiUrl);
+        res.json(response.data);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch data plans', details: err.message });
+    }
 };
 
 exports.buyData = (req, res) => {
