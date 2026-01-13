@@ -1,18 +1,31 @@
-  // Hamburger menu toggle for mobile navbar
+  // Hamburger menu toggle for mobile navbar (overlay style)
   document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
     if (hamburger && navLinks) {
-      hamburger.addEventListener('click', function() {
-        navLinks.classList.toggle('open');
-        hamburger.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+      hamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (navLinks.style.display === 'flex') {
+          navLinks.style.display = 'none';
+          hamburger.setAttribute('aria-expanded', 'false');
+        } else {
+          navLinks.style.display = 'flex';
+          hamburger.setAttribute('aria-expanded', 'true');
+        }
       });
-      // Optional: close menu when a link is clicked (for better UX)
+      // Close menu when a link is clicked
       navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
-          navLinks.classList.remove('open');
+          navLinks.style.display = 'none';
           hamburger.setAttribute('aria-expanded', 'false');
         });
+      });
+      // Optional: close menu on outside click
+      document.addEventListener('click', function(e) {
+        if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+          navLinks.style.display = 'none';
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
       });
     }
   });
