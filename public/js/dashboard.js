@@ -1,3 +1,9 @@
+  // Logout button handler
+  document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    localStorage.removeItem('rdata_auth');
+    window.location.href = 'login.html';
+  });
 // --- Dark Mode Logic ---
 function applyTheme(theme) {
   document.body.classList.toggle('dark-mode', theme === 'dark');
@@ -135,13 +141,27 @@ document.addEventListener('DOMContentLoaded', () => {
     userEmail = auth && auth.user && auth.user.email ? auth.user.email : '';
     } catch {}
     fetch('/api/dashboard?email=' + encodeURIComponent(userEmail))
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('greeting').textContent = `Good afternoon, ${data.name}`;
-        document.getElementById('balance').textContent = `₵${data.balance.toFixed(2)}`;
-        document.getElementById('todays-spent').textContent = `₵${data.todaysSpent.toFixed(2)}`;
-        document.getElementById('total-spent').textContent = `₵${data.totalSpent.toFixed(2)}`;
-      });
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('greeting').textContent = `Welcome, ${data.name}`;
+            document.getElementById('balance').textContent = `₵${data.balance.toFixed(2)}`;
+            document.getElementById('todays-spent').textContent = `₵${data.todaysSpent.toFixed(2)}`;
+            document.getElementById('total-spent').textContent = `₵${data.totalSpent.toFixed(2)}`;
+        });
+    // Responsive centering for dashboard main content
+    function centerDashboardOnMobile() {
+      if (window.innerWidth <= 600) {
+        document.querySelector('main').style.display = 'flex';
+        document.querySelector('main').style.flexDirection = 'column';
+        document.querySelector('main').style.alignItems = 'center';
+      } else {
+        document.querySelector('main').style.display = '';
+        document.querySelector('main').style.flexDirection = '';
+        document.querySelector('main').style.alignItems = '';
+      }
+    }
+    window.addEventListener('resize', centerDashboardOnMobile);
+    centerDashboardOnMobile();
 
   // Fetch available networks for Buy Data
   const networkSelect = document.getElementById('network');

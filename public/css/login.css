@@ -65,7 +65,7 @@
 }
 /* Enhanced Login Form Styles (match signup) */
 .login-form {
-  background: linear-gradient(120deg, #f7faff 60%, #e0eaff 100%);
+  background: #fff;
   border-radius: 14px;
   box-shadow: 0 6px 32px rgba(0,123,255,0.10);
   padding: 2.2rem 2rem 1.5rem 2rem;
@@ -113,7 +113,7 @@
 }
 /* Enhanced Signup Form Styles */
 .signup-form {
-  background: linear-gradient(120deg, #f7faff 60%, #e0eaff 100%);
+  background: #fff;
   border-radius: 14px;
   box-shadow: 0 6px 32px rgba(0,123,255,0.10);
   padding: 2.2rem 2rem 1.5rem 2rem;
@@ -170,7 +170,7 @@
 @import url('auth.css');
 
 body {
-  background: linear-gradient(135deg, #f8f8f8 0%, #ffe082 100%);
+      background: #fff;
   font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
   min-height: 100vh;

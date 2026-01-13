@@ -19,6 +19,7 @@ exports.getDashboard = (req, res) => {
     if (!email) return res.status(400).json({ error: 'User email required' });
     const user = users.find(u => u.email === email);
     if (!user) return res.status(404).json({ error: 'User not found' });
+    // Only show the name used at signup
     res.json({
         name: user.name || 'User',
         balance: user.wallet || 0,
