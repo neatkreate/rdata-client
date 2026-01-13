@@ -1,3 +1,70 @@
+/* Responsive Navbar */
+.navbar {
+  background: #004aad;
+  color: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+.navbar .logo {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+.navbar .nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.navbar .hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+}
+.navbar .hamburger span {
+  height: 3px;
+  width: 25px;
+  background: #fff;
+  border-radius: 2px;
+  display: block;
+}
+@media (max-width: 768px) {
+  .navbar .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #004aad;
+    flex-direction: column;
+    width: 180px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 0 0 8px 8px;
+    z-index: 1001;
+    padding: 1rem 0;
+    gap: 0;
+  }
+  .navbar .nav-links.open {
+    display: flex;
+  }
+  .navbar .nav-links li {
+    margin: 0.5rem 0;
+    text-align: left;
+    padding-left: 1.5rem;
+  }
+  .navbar .hamburger {
+    display: flex;
+  }
+}
 /* Session Timeout Modal */
 #sessionWarningModal {
   position: fixed;
@@ -390,7 +457,7 @@ main {
     margin-bottom: 2rem;
 }
 .card {
-    background: #ffc107;
+    background: #0077ff;
     color: #222;
     border-radius: 8px;
     padding: 1rem;
@@ -454,7 +521,7 @@ main {
     transition: background 0.2s;
 }
 #buy-data:hover, #top-up:hover {
-    background: #e0a800;
+    background: #0056b3;
 }
 
 /* Modal Styles */
@@ -501,7 +568,7 @@ main {
   font-size: 1rem;
 }
 .cta-btn {
-  background: #ffc107;
+  background: #0077ff;
   color: #222;
   border: none;
   border-radius: 6px;
@@ -512,7 +579,7 @@ main {
   transition: background 0.2s;
 }
 .cta-btn:hover {
-  background: #e0a800;
+  background: #0056b3;
 }
 
 /* Responsive */
