@@ -1,3 +1,24 @@
+/* Force header to top and full width */
+body {
+  display: block !important;
+}
+.header {
+  width: 100vw !important;
+  left: 0;
+  top: 0;
+  position: fixed;
+  z-index: 1002;
+  background: #004aad;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.main-content, main {
+  margin-top: 80px !important;
+}
 /* --- EliteDrive-style Header/Navbar --- */
  .header {
   background: #004aad;
@@ -719,4 +740,80 @@ main {
     min-width: auto;
     width: 100%;
   }
+}
+
+/* --- API Docs Style Header/Navbar --- */
+/* --- API Docs Style Header/Navbar --- */
+.header {
+  background: #004aad !important;
+  color: #fff !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 1.2rem !important; /* smaller padding */
+  min-height: 44px; /* smaller height */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1002;
+}
+.header .logo {
+  font-size: 1.18rem !important; /* smaller logo font */
+  font-weight: bold !important;
+  color: #fff !important;
+  letter-spacing: 1px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.navbar {
+  display: flex;
+  align-items: center;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.2rem; /* slightly tighter spacing */
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+.nav-links a {
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.98rem; /* smaller nav link font */
+  transition: color 0.2s;
+  padding: 2px 0;
+}
+.nav-links a.active,
+.nav-links a:hover {
+  color: #cce6ff !important;
+  border-bottom: 2px solid #fff;
+}
+@media (max-width: 768px) {
+  .header {
+    padding: 0.38rem 0.7rem !important; /* even smaller for mobile */
+    min-height: 38px;
+  }
+  .nav-links {
+    flex-direction: column;
+    gap: 0.7rem;
+    background: #004aad;
+    position: absolute;
+    top: 38px;
+    right: 0;
+    width: 150px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-radius: 0 0 8px 8px;
+    padding: 0.7rem 0;
+    z-index: 1001;
+    display: none;
+  }
+  .nav-links.open {
+    display: flex !important;
+  }
+}
+main, .main-content {
+  margin-top: 48px !important; /* match new header height */
 }
