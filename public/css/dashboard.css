@@ -98,6 +98,90 @@
     display: flex;
   }
 }
+/* --- Modern Horizontal Header/Navbar (API Docs style) --- */
+/* Header container */
+.header {
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Logo styling */
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  letter-spacing: 1px;
+}
+
+/* Navbar layout */
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+/* Hamburger menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background: #2c3e50;
+  margin: 4px 0;
+  border-radius: 2px;
+}
+
+/* Navigation links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #007bff;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+    border-radius: 8px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+}
 /* Session Timeout Modal */
 #sessionWarningModal {
   position: fixed;
@@ -635,14 +719,4 @@ main {
     min-width: auto;
     width: 100%;
   }
-}
-/* Playful bounce animation */
-.bounce {
-  animation: bounceAnim 0.3s ease;
-}
-
-@keyframes bounceAnim {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.08); }
-  100% { transform: scale(1); }
 }
