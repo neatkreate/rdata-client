@@ -30,48 +30,7 @@
   border-radius: 2px;
   display: block;
 }
- .header .nav-links {
-  list-style: none;
-  position: fixed;
-  top: 0;
-  right: 0;
-  background: #004aad;
-  color: #fff;
-  min-width: 180px;
-  padding: 2.2rem 1.7rem 1.7rem 1.7rem;
-  border-radius: 0 0 0 18px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
-  display: none;
-  flex-direction: column;
-  gap: 1.5rem;
-  z-index: 1001;
-}
-.header .nav-links.open {
-  display: flex !important;
-}
-.header .nav-links a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.15rem;
-}
-@media (min-width: 769px) {
-  .header .nav-links {
-    position: static;
-    display: flex !important;
-    flex-direction: row;
-    background: none;
-    box-shadow: none;
-    padding: 0;
-    min-width: unset;
-    border-radius: 0;
-    gap: 2.2rem;
-    color: #fff;
-  }
-  .header .hamburger {
-    display: none;
-  }
-}
+/* Removed .header .nav-links styles to use only .navbar .nav-links for horizontal top navbar */
 /* Responsive Navbar */
 .navbar {
   background: #004aad;
