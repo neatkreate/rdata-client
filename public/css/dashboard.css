@@ -107,7 +107,8 @@ body {
     padding: 1rem 0;
     gap: 0;
   }
-  .navbar .nav-links.open {
+  .navbar .nav-links.open,
+  .navbar .nav-links.active {
     display: flex;
   }
   .navbar .nav-links li {
