@@ -109,7 +109,7 @@ body {
   }
   .navbar .nav-links.open,
   .navbar .nav-links.active {
-    display: flex;
+    display: flex !important;
   }
   .navbar .nav-links li {
     margin: 0.5rem 0;
@@ -649,18 +649,18 @@ main {
     gap: 1rem;
 }
 #buy-data, #top-up {
-    background: #f0cd67;
-    color: #222;
-    border: none;
-    border-radius: 6px;
-    padding: 0.7rem 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.2s;
+  background: #0077ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
 }
 #buy-data:hover, #top-up:hover {
-    background: #0056b3;
+  background: #0056b3;
 }
 
 /* Modal Styles */
@@ -811,7 +811,7 @@ main {
     z-index: 1001;
     display: none;
   }
-  .nav-links.open {
+  .nav-links.active {
     display: flex !important;
   }
 }

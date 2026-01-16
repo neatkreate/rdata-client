@@ -43,57 +43,108 @@
             <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
           </thead>
           <tbody>
-            <tr><td><span class="api-docs-badge">POST</span></td><td>/api/bundles/purchase</td><td>Purchase a bundle for a customer</td></tr>
-            <tr><td><span class="api-docs-badge">GET</span></td><td>/api/bundles</td><td>List available bundles</td></tr>
-            <tr><td><span class="api-docs-badge">GET</span></td><td>/api/agent/profile</td><td>Get agent profile details</td></tr>
+            <tr><td><span class="api-docs-badge">POST</span></td><td>/api/bundle/purchase</td><td>Purchase a bundle for a customer (SmartDataLink)</td></tr>
+            <tr><td><span class="api-docs-badge">GET</span></td><td>/api/bundle/status/:orderId</td><td>Check bundle order status</td></tr>
+            <tr><td><span class="api-docs-badge">GET</span></td><td>/api/bundle</td><td>List available bundles</td></tr>
+            <tr><td><span class="api-docs-badge">POST</span></td><td>/api/top-up-mobile-money</td><td>Top up wallet via Mobile Money</td></tr>
+            <tr><td><span class="api-docs-badge">POST</span></td><td>/api/payment/paystack/initiate</td><td>Top up wallet via Paystack</td></tr>
+            <tr><td><span class="api-docs-badge">POST</span></td><td>/api/payment/paystack/webhook</td><td>Paystack payment webhook (server-to-server)</td></tr>
+            <tr><td><span class="api-docs-badge">POST</span></td><td>/api/auth/signup</td><td>Register new user</td></tr>
+            <tr><td><span class="api-docs-badge">POST</span></td><td>/api/auth/login</td><td>User login</td></tr>
+            <tr><td><span class="api-docs-badge">GET</span></td><td>/api/auth/agent/profile</td><td>Get user profile (requires login)</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="api-docs-section">
-        <h2>Example: Purchase Bundle</h2>
-        <pre><code>POST /api/bundles/purchase
+        <h2>Example: Top Up Wallet (Paystack)</h2>
+        <pre><code>POST /api/payment/paystack/initiate
 {
-  "customer": "024XXXXXXX",
-  "bundle": "MTN 5GB",
-  "amount": 30.00
+  "email": "user@email.com",
+  "amount": 100
 }
 </code></pre>
         <ul>
-          <li><strong>customer</strong>: Customer's phone number (string)</li>
-          <li><strong>bundle</strong>: Bundle name (string, e.g., "MTN 5GB")</li>
-          <li><strong>amount</strong>: Amount to charge (number)</li>
+          <li><strong>email</strong>: User's email (string)</li>
+          <li><strong>amount</strong>: Amount to top up (number, in GHS)</li>
         </ul>
       </div>
-
+      <div class="api-docs-section">
+        <h2>Example: Paystack Webhook</h2>
+        <pre><code>POST /api/payment/paystack/webhook
+{ ...Paystack event payload... }
+</code></pre>
+        <ul>
+          <li>Used by Paystack to notify your server of payment events. Not for client use.</li>
+        </ul>
+      </div>
+      <div class="api-docs-section">
+        <h2>Example: Purchase Bundle</h2>
+        <pre><code>POST /api/bundle/purchase
+{
+  "beneficiary": "024XXXXXXX",
+  "package_size": "MTN 5GB"
+}
+</code></pre>
+        <ul>
+          <li><strong>beneficiary</strong>: Customer's phone number (string)</li>
+          <li><strong>package_size</strong>: Bundle name/size (string, see <a href="#">/api/bundle</a> for available options)</li>
+        </ul>
+      </div>
+      <div class="api-docs-section">
+        <h2>Example: Check Bundle Status</h2>
+        <pre><code>GET /api/bundle/status/ORDER12345</code></pre>
+        <ul>
+          <li>Returns the status of a specific bundle order by order ID.</li>
+        </ul>
+      </div>
+      <div class="api-docs-section">
+        <h2>Example: User Registration</h2>
+        <pre><code>POST /api/auth/signup
+{
+  "name": "User Name",
+  "email": "user@email.com",
+  "phone": "024XXXXXXX",
+  "password": "yourpassword"
+}
+</code></pre>
+        <ul>
+          <li>Signup is open. No payment or renewal is required for API access.</li>
+        </ul>
+      </div>
       <div class="api-docs-section">
         <h2>Response Example</h2>
         <pre><code>{
   "status": "success",
-  "transactionId": "TX123456789",
-  "message": "Bundle purchased successfully."
+  "message": "Action completed successfully.",
+  "data": { ... }
 }
 </code></pre>
+        <ul>
+          <li>All endpoints return JSON responses. On error, <code>status</code> will be <code>error</code> and an <code>error</code> or <code>message</code> field will be present.</li>
+        </ul>
       </div>
-
       <div class="api-docs-section">
         <h2>Errors</h2>
         <ul>
-          <li><strong>401 Unauthorized</strong>: Invalid or missing API key</li>
+          <li><strong>401 Unauthorized</strong>: Invalid or missing API key or session</li>
           <li><strong>400 Bad Request</strong>: Invalid parameters</li>
           <li><strong>500 Server Error</strong>: Internal server error</li>
         </ul>
       </div>
-
       <div class="api-docs-section" id="register-api-section">
         <h2>Register Your Website API</h2>
-        <p>Verified agents can register their website to receive API access. Enter your website URL below. Once approved, you will be able to use your API key to access the endpoints above.</p>
+        <p>Users can register their website to receive API access. Enter your website URL below. Once approved, you will be able to use your API key to access the endpoints above.</p>
         <form id="register-api-form">
           <label for="website-url">Website URL:</label>
           <input type="url" id="website-url" name="website-url" placeholder="https://yourwebsite.com" required>
           <button type="submit">Register Website</button>
         </form>
         <div id="register-api-message"></div>
+        <ul>
+          <li>Most endpoints require authentication (API key or session cookie).</li>
+          <li>No registration fee or renewal is required.</li>
+        </ul>
       </div>
 
     </section>

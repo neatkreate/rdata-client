@@ -1,4 +1,4 @@
-  // Hamburger menu toggle for mobile navbar (EliteDrive style)
+// Hamburger menu toggle for mobile navbar (EliteDrive style)
   document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('navLinks');
@@ -162,18 +162,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch user dashboard data (send email)
     let userEmail = '';
+    let userFirstName = '';
     try {
-    const auth = JSON.parse(localStorage.getItem('rdata_auth'));
-    userEmail = auth && auth.user && auth.user.email ? auth.user.email : '';
-    } catch {}
-    fetch('/api/dashboard?email=' + encodeURIComponent(userEmail))
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById('greeting').textContent = `Welcome, ${data.name}`;
-            document.getElementById('balance').textContent = `₵${data.balance.toFixed(2)}`;
-            document.getElementById('todays-spent').textContent = `₵${data.todaysSpent.toFixed(2)}`;
-            document.getElementById('total-spent').textContent = `₵${data.totalSpent.toFixed(2)}`;
-        });
+      const auth = JSON.parse(localStorage.getItem('rdata_auth'));
+      if (!auth) {
+        document.getElementById('greeting').textContent = 'Welcome, please log in.';
+        alert('No user session found. Please log in.');
+        return;
+      }
+      if (!auth.user || !auth.user.email) {
+        document.getElementById('greeting').textContent = 'Welcome, user (missing email)';
+        alert('User info missing in session. Debug info: ' + JSON.stringify(auth));
+        return;
+      }
+      userEmail = auth.user.email;
+      if (auth.user.name) {
+        userFirstName = auth.user.name.split(' ')[0];
+      } else {
+        userFirstName = userEmail;
+      }
+    } catch (e) {
+      document.getElementById('greeting').textContent = 'Welcome, error reading session.';
+      alert('Error reading user session: ' + e.message);
+      return;
+    }
+    document.getElementById('greeting').textContent = `Welcome, ${userFirstName}`;
+    // Optionally, fetch dashboard data if needed
+    // fetch('/api/dashboard?email=' + encodeURIComponent(userEmail))
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     document.getElementById('balance').textContent = `₵${data.balance.toFixed(2)}`;
+    //     document.getElementById('todays-spent').textContent = `₵${data.todaysSpent.toFixed(2)}`;
+    //     document.getElementById('total-spent').textContent = `₵${data.totalSpent.toFixed(2)}`;
+    //   });
     // Responsive centering for dashboard main content
     function centerDashboardOnMobile() {
       if (window.innerWidth <= 600) {
@@ -253,10 +274,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let email = '';
     try {
       const auth = JSON.parse(localStorage.getItem('rdata_auth'));
-      email = auth && auth.user && auth.user.email ? auth.user.email : '';
-    } catch {}
-    if (!email) {
-      alert('User email not found. Please log in again.');
+      if (!auth) {
+        alert('No user session found. Please log in.');
+        return;
+      }
+      if (!auth.user || !auth.user.email) {
+        alert('User info missing in session. Debug info: ' + JSON.stringify(auth));
+        return;
+      }
+      email = auth.user.email;
+    } catch (e) {
+      alert('Error reading user session: ' + e.message);
       return;
     }
     // Call backend to get Paystack reference
