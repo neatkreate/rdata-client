@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(res => res.json())
       .then(result => {
         if (result.status === 'success') {
-          // Optionally store user info in localStorage/sessionStorage
+          localStorage.setItem('rdata_auth', JSON.stringify(result));
           window.location.href = 'dashboard.html';
         } else {
           alert(result.error || 'Login failed');
