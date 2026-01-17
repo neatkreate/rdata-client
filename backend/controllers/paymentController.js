@@ -15,15 +15,16 @@ exports.initiatePaystack = async (req, res) => {
   try {
     // Convert GHC to kobo (Paystack expects amount in kobo)
     const payAmount = Math.round(amount * 100);
-
+    const payload = {
+      email,
+      amount: payAmount,
+      currency: 'GHS',
+      channels: ['mobile_money']
+    };
+    console.log('Paystack INIT payload:', payload);
     const response = await axios.post(
       'https://api.paystack.co/transaction/initialize',
-      {
-        email,
-        amount: payAmount,
-        currency: 'GHS',
-        channels: ['mobile_money']
-      },
+      payload,
       {
         headers: {
           Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,

@@ -12,12 +12,16 @@ router.post('/topup/initiate', async (req, res) => {
     return res.status(400).json({ message: 'Email and amount are required.' });
   }
   try {
+    const payload = {
+      email,
+      amount: amount * 100, // Paystack expects amount in kobo
+      currency: 'GHS',
+      channels: ['mobile_money']
+    };
+    console.log('Paystack INIT payload:', payload);
     const response = await axios.post(
       'https://api.paystack.co/transaction/initialize',
-      {
-        email,
-        amount: amount * 100 // Paystack expects amount in kobo
-      },
+      payload,
       {
         headers: {
           Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
