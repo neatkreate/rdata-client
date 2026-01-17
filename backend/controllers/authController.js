@@ -1,83 +1,89 @@
 // Handles user signup, login, and renewal status
 
-const userModel = require('../models/user');
-const crypto = require('crypto');
 
-// Helper: Find user by email
-function findUser(email) {
-  const users = userModel.loadUsers();
-  return users.find(u => u.email === email);
-}
+const User = require('../models/user');
+const crypto = require('crypto');
 
 // Signup: create user, require payment for yearly renewal
 exports.signup = async (req, res) => {
   const { name, email, phone, password } = req.body;
-  let users = userModel.loadUsers();
-  if (users.find(u => u.email === email)) {
-    return res.status(400).json({ error: 'User already exists' });
+  try {
+    const existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+    // Hash password (simple demo, use bcrypt in production)
+    const hashed = crypto.createHash('sha256').update(password).digest('hex');
+    // Set renewal date to now, paid false
+    const user = new User({
+      name,
+      email,
+      phone,
+      password: hashed,
+      renewalDate: null,
+      paid: false
+    });
+    await user.save();
+    res.json({ status: 'success', user });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
   }
-  // Hash password (simple demo, use bcrypt in production)
-  const hashed = crypto.createHash('sha256').update(password).digest('hex');
-  // Set renewal date to now, paid false
-  const user = {
-    id: users.length + 1,
-    name,
-    email,
-    phone,
-    password: hashed,
-    renewalDate: null,
-    paid: false
-  };
-  users.push(user);
-  userModel.saveUsers(users);
-  res.json({ status: 'success', user });
 };
 
 
 // Login: check credentials
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  const users = userModel.loadUsers();
-  const user = users.find(u => u.email === email);
-  if (!user) return res.status(404).json({ error: 'User not found' });
-  const hashed = crypto.createHash('sha256').update(password).digest('hex');
-  if (user.password !== hashed) return res.status(401).json({ error: 'Invalid password' });
-  // Only allow login if agent is approved (isVerified === true)
-  if (user.role === 'agent' && !user.isVerified) {
-    return res.status(403).json({ error: 'Agent not approved by admin yet.' });
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    const hashed = crypto.createHash('sha256').update(password).digest('hex');
+    if (user.password !== hashed) return res.status(401).json({ error: 'Invalid password' });
+    // Only allow login if agent is approved (isVerified === true)
+    if (user.role === 'agent' && !user.isVerified) {
+      return res.status(403).json({ error: 'Agent not approved by admin yet.' });
+    }
+    // Check renewal
+    const now = new Date();
+    let renewalDue = true;
+    if (user.renewalDate && user.paid) {
+      const renewal = new Date(user.renewalDate);
+      renewalDue = now > renewal;
+    }
+    res.json({ status: 'success', user, renewalDue });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
   }
-  // Check renewal
-  const now = new Date();
-  let renewalDue = true;
-  if (user.renewalDate && user.paid) {
-    const renewal = new Date(user.renewalDate);
-    renewalDue = now > renewal;
-  }
-  res.json({ status: 'success', user, renewalDue });
 };
 
 
 // Renewal status: check if user has paid for current year
 exports.renewalStatus = async (req, res) => {
   const { userId } = req.params;
-  const users = userModel.loadUsers();
-  const user = users.find(u => u.id == userId);
-  if (!user) return res.status(404).json({ error: 'User not found' });
-  const now = new Date();
-  let renewalDue = true;
-  if (user.renewalDate && user.paid) {
-    const renewal = new Date(user.renewalDate);
-    renewalDue = now > renewal;
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    const now = new Date();
+    let renewalDue = true;
+    if (user.renewalDate && user.paid) {
+      const renewal = new Date(user.renewalDate);
+      renewalDue = now > renewal;
+    }
+    res.json({ status: 'success', renewalDue, renewalDate: user.renewalDate, paid: user.paid });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
   }
-  res.json({ status: 'success', renewalDue, renewalDate: user.renewalDate, paid: user.paid });
 };
 
 // Get agent profile by email
 exports.getAgentProfile = async (req, res) => {
   const { email } = req.query;
   if (!email) return res.status(400).json({ error: 'Email required' });
-  const users = userModel.loadUsers();
-  const user = users.find(u => u.email === email && u.role === 'agent');
-  if (!user) return res.status(404).json({ error: 'Agent not found' });
-  res.json({ user });
+  try {
+    const user = await User.findOne({ email, role: 'agent' });
+    if (!user) return res.status(404).json({ error: 'Agent not found' });
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };

@@ -1,5 +1,5 @@
 // dashboardController.js
-const users = require('../models/users.json');
+const User = require('../models/user');
 
 // Dummy data for demonstration
 const networks = [
@@ -56,19 +56,21 @@ const dataPlans = {
     // telecel list removed; now under vodafone
 };
 
-exports.getDashboard = (req, res) => {
-    // Get user email from query, header, or session (for demo, use query or header)
+exports.getDashboard = async (req, res) => {
     const email = req.query.email || req.headers['x-user-email'];
     if (!email) return res.status(400).json({ error: 'User email required' });
-    const user = users.find(u => u.email === email);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    // Only show the name used at signup
-    res.json({
-        name: user.name || 'User',
-        balance: user.wallet || 0,
-        todaysSpent: user.todaysSpent || 0,
-        totalSpent: user.totalSpent || 0
-    });
+    try {
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json({
+            name: user.name || 'User',
+            balance: user.wallet || 0,
+            todaysSpent: user.todaysSpent || 0,
+            totalSpent: user.totalSpent || 0
+        });
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
 };
 
 exports.getNetworks = (req, res) => {
@@ -89,39 +91,32 @@ exports.buyData = async (req, res) => {
     if (!network || !dataPlan || !beneficiary || !email) {
         return res.status(400).json({ message: 'Missing required fields.' });
     }
-
-    // Find user and check wallet balance
-    const user = users.find(u => u.email === email);
-    if (!user) {
-        return res.status(404).json({ message: 'User not found.' });
-    }
-
-    // Extract price from dataPlan string (e.g., '1 GB — ₵4.90')
-    const priceMatch = dataPlan.match(/₵([\d.]+)/);
-    const price = priceMatch ? parseFloat(priceMatch[1]) : null;
-    if (!price) {
-        return res.status(400).json({ message: 'Could not determine package price.' });
-    }
-    if ((user.wallet || 0) < price) {
-        return res.status(402).json({ message: 'Insufficient wallet balance.' });
-    }
-
-    // SmartDataLink API credentials (use env vars in production)
-    const SMARTDATALINK_API_KEY = process.env.SMARTDATALINK_API_KEY || 'YOUR_API_KEY';
-    const SMARTDATALINK_API_SECRET = process.env.SMARTDATALINK_API_SECRET || 'YOUR_API_SECRET';
-    const SMARTDATALINK_BASE_URL = 'https://blessdatahub.com/api/create_order.php';
-
-    // Prepare package size (assume dataPlan is like '1 GB — ₵4.90', extract '1GB')
-    const packageSize = dataPlan.split(' ')[0].replace('GB', 'GB');
-
-    const payload = {
-        api_key: SMARTDATALINK_API_KEY,
-        api_secret: SMARTDATALINK_API_SECRET,
-        beneficiary,
-        package_size: packageSize
-    };
-
     try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+        // Extract price from dataPlan string (e.g., '1 GB — ₵4.90')
+        const priceMatch = dataPlan.match(/₵([\d.]+)/);
+        const price = priceMatch ? parseFloat(priceMatch[1]) : null;
+        if (!price) {
+            return res.status(400).json({ message: 'Could not determine package price.' });
+        }
+        if ((user.wallet || 0) < price) {
+            return res.status(402).json({ message: 'Insufficient wallet balance.' });
+        }
+        // SmartDataLink API credentials (use env vars in production)
+        const SMARTDATALINK_API_KEY = process.env.SMARTDATALINK_API_KEY || 'YOUR_API_KEY';
+        const SMARTDATALINK_API_SECRET = process.env.SMARTDATALINK_API_SECRET || 'YOUR_API_SECRET';
+        const SMARTDATALINK_BASE_URL = 'https://blessdatahub.com/api/create_order.php';
+        // Prepare package size (assume dataPlan is like '1 GB — ₵4.90', extract '1GB')
+        const packageSize = dataPlan.split(' ')[0].replace('GB', 'GB');
+        const payload = {
+            api_key: SMARTDATALINK_API_KEY,
+            api_secret: SMARTDATALINK_API_SECRET,
+            beneficiary,
+            package_size: packageSize
+        };
         const response = await fetch(SMARTDATALINK_BASE_URL, {
             method: 'POST',
             headers: {
@@ -134,13 +129,13 @@ exports.buyData = async (req, res) => {
         if (result.status === 'success') {
             // Deduct from wallet and save
             user.wallet = (user.wallet || 0) - price;
-            require('fs').writeFileSync(require('path').join(__dirname, '../models/users.json'), JSON.stringify(users, null, 2));
+            await user.save();
             res.json({ message: 'Data purchase successful!', order_id: result.order_ids[0], cost: result.total_cost });
         } else {
             res.status(400).json({ message: 'Data purchase failed.', details: result });
         }
     } catch (err) {
-        res.status(500).json({ message: 'Error connecting to SmartDataLink API.', error: err.message });
+        res.status(500).json({ message: 'Error processing request.', error: err.message });
     }
 };
 
