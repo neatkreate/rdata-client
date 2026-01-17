@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>API Documentation - RData</title>
+  <title>API Documentation - KINGDOMDATAGH</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/api-docs.css">
 </head>
@@ -26,8 +26,8 @@
   </header>
   <main>
     <section class="api-docs-container">
-      <h1>RData API Documentation</h1>
-      <p class="api-docs-intro">Integrate your app or system with RData to automate bundle sales, agent management, and more. All requests require your API key in the Authorization header.</p>
+      <h1>KINGDOMDATAGH API Documentation</h1>
+      <p class="api-docs-intro">Integrate your app or system with KINGDOMDATAGH to automate bundle sales, agent management, and more. All requests require your API key in the Authorization header.</p>
 
       <div class="api-docs-section">
         <h2>Authentication</h2>
@@ -36,12 +36,27 @@
       <!-- Removed duplicate nav and hamburger -->
       </div>
 
-      <div class="api-docs-section">
-        <h2>Endpoints</h2>
+
+      <div class="api-docs-section api-docs-highlight">
+        <h2>How to Integrate Your Website</h2>
+        <ol>
+          <li><b>Generate Your API Key:</b><br>
+            Go to your dashboard, open <b>API Keys</b>, and click <b>Generate API Key</b>. Set a name and rate limit, then copy your API key (and secret, if provided). Keep these safe!
+          </li>
+          <li><b>Review the API Endpoints:</b><br>
+            See the table below for all available endpoints, required parameters, and sample requests.
+          </li>
+          <li><b>Authenticate Every Request:</b><br>
+            Add your API key in the <code>Authorization</code> header as a Bearer token.<br>
+            <pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+          </li>
+          <li><b>Example: Create a Data Order (Node.js)</b><br>
+            <pre><code>const fetch = require('node-fetch');
+            // ...
+            </code></pre>
+          </li>
+        </ol>
         <table class="api-docs-table">
-          <thead>
-            <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
-          </thead>
           <tbody>
             <tr><td><span class="api-docs-badge">POST</span></td><td>/api/bundle/purchase</td><td>Purchase a bundle for a customer (SmartDataLink)</td></tr>
             <tr><td><span class="api-docs-badge">GET</span></td><td>/api/bundle/status/:orderId</td><td>Check bundle order status</td></tr>
@@ -68,11 +83,30 @@
           <li><strong>email</strong>: User's email (string)</li>
           <li><strong>amount</strong>: Amount to top up (number, in GHS)</li>
         </ul>
-      </div>
+        <div class="api-docs-example">
+          <b>Example: Check Order Status</b><br>
+          <pre><code>fetch('https://yourdomain.com/api/check_order_status.php?order_id=123&api_key=YOUR_API_KEY')</code></pre>
+        </div>
       <div class="api-docs-section">
         <h2>Example: Paystack Webhook</h2>
         <pre><code>POST /api/payment/paystack/webhook
 { ...Paystack event payload... }
+          <ul>
+            <li><b>Handle Errors:</b><br>
+              Always check the <code>status</code> or <code>success</code> field in the response. Handle errors such as insufficient balance, invalid API key, or rate limits.
+            </li>
+            <li><b>Security:</b><br>
+              Never share your API key or secret publicly. Regenerate or deactivate keys if you suspect compromise.
+            </li>
+          </ul>
+          <p class="api-docs-contact"><b>Need more code samples or help? Contact support!</b></p>
+      </div>
+      <div class="api-docs-section">
+        <h2>Authentication</h2>
+        <p>All API requests require authentication using your <strong>Agent API Key</strong> in the <code>Authorization</code> header:</p>
+        <pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+      <!-- Removed duplicate nav and hamburger -->
+      </div>
 </code></pre>
         <ul>
           <li>Used by Paystack to notify your server of payment events. Not for client use.</li>
@@ -150,7 +184,7 @@
     </section>
   </main>
   <footer class="footer">
-    <p>&copy; 2025 RData. All rights reserved.</p>
+    <p>&copy; 2025 KINGDOMDATAGH. All rights reserved.</p>
   </footer>
   <script src="js/api-docs.js"></script>
   <script src="js/main.js"></script>

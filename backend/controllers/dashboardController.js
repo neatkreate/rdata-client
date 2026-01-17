@@ -8,7 +8,7 @@ const networks = [
     { id: 'airteltigo', name: 'AirtelTigo' }
 ];
 
-// RichDataPalace MTN Non-Expiry Bundles
+// Updated bundles for all networks (sync with RichDataPalace)
 const dataPlans = {
     mtn: [
         { id: '1gb', name: '1 GB — ₵4.90' },
@@ -26,8 +26,30 @@ const dataPlans = {
         { id: '40gb', name: '40 GB — ₵190.00' },
         { id: '50gb', name: '50 GB — ₵230.00' }
     ],
-    vodafone: [ { id: 'vod1', name: '1GB - ₵9' }, { id: 'vod2', name: '2GB - ₵17' } ],
-    airteltigo: [ { id: 'air1', name: '1GB - ₵8' }, { id: 'air2', name: '2GB - ₵15' } ]
+    vodafone: [
+        { id: '1gb', name: '1 GB — ₵9.00' },
+        { id: '2gb', name: '2 GB — ₵17.00' },
+        { id: '3gb', name: '3 GB — ₵25.00' },
+        { id: '4gb', name: '4 GB — ₵33.00' },
+        { id: '5gb', name: '5 GB — ₵41.00' },
+        { id: '10gb', name: '10 GB — ₵80.00' }
+    ],
+    airteltigo: [
+        { id: '1gb', name: '1 GB — ₵8.00' },
+        { id: '2gb', name: '2 GB — ₵15.00' },
+        { id: '3gb', name: '3 GB — ₵22.00' },
+        { id: '4gb', name: '4 GB — ₵29.00' },
+        { id: '5gb', name: '5 GB — ₵36.00' },
+        { id: '10gb', name: '10 GB — ₵70.00' }
+    ],
+    telecel: [
+        { id: '1gb', name: '1 GB — ₵8.00' },
+        { id: '2gb', name: '2 GB — ₵15.00' },
+        { id: '3gb', name: '3 GB — ₵22.00' },
+        { id: '4gb', name: '4 GB — ₵29.00' },
+        { id: '5gb', name: '5 GB — ₵36.00' },
+        { id: '10gb', name: '10 GB — ₵70.00' }
+    ]
 };
 
 exports.getDashboard = (req, res) => {

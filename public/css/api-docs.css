@@ -1,3 +1,14 @@
+/* Highlighted API docs section (was inline style) */
+.api-docs-highlight {
+  background: #f9f9f9;
+  padding: 1.2em 1.5em;
+  border-radius: 8px;
+  margin-bottom: 2em;
+}
+
+.api-docs-contact {
+  margin-top: 1em;
+}
 /* API Docs Page Styles */
 .api-docs-container {
   max-width: 800px;
