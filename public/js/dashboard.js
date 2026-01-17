@@ -266,11 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-topup').addEventListener('click', function() {
       document.getElementById('topup-modal').style.display = 'none';
   });
-  // Handle Top Up form submission (Paystack integration)
+  // Handle Top Up form submission (Paystack redirect integration)
   document.getElementById('topup-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const amount = document.getElementById('topup-amount').value;
-    // Get user email from auth (localStorage)
     let email = '';
     try {
       const auth = JSON.parse(localStorage.getItem('rdata_auth'));
@@ -287,43 +286,22 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Error reading user session: ' + e.message);
       return;
     }
-    // Call backend to get Paystack reference
-    let paystackData;
+    // Call backend to get Paystack payment URL
+    let result;
     try {
-      const res = await fetch('/api/paystack/topup/initiate', {
+      const res = await fetch('/api/top-up-mobile-money', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, amount })
       });
-      paystackData = await res.json();
-      if (!paystackData.data || !paystackData.data.reference) throw new Error('No reference');
+      result = await res.json();
+      if (!result.payment_url) throw new Error('No payment URL returned');
     } catch (err) {
       alert('Failed to initiate payment.');
       return;
     }
-    // Load Paystack script if not already loaded
-    if (!window.PaystackPop) {
-      const script = document.createElement('script');
-      script.src = 'https://js.paystack.co/v1/inline.js';
-      document.body.appendChild(script);
-      await new Promise(resolve => { script.onload = resolve; });
-    }
-    // Open Paystack payment popup
-    const handler = window.PaystackPop && window.PaystackPop.setup({
-      key: 'pk_live_36fcd597cc47d87b5421d5e14e6117ebb0baf053',
-      email: email,
-      amount: amount * 100,
-      ref: paystackData.data.reference,
-      callback: function(response) {
-        alert('Payment successful! Your wallet will be credited shortly.');
-        document.getElementById('topup-modal').style.display = 'none';
-        location.reload();
-      },
-      onClose: function() {
-        alert('Payment window closed.');
-      }
-    });
-    if (handler) handler.openIframe();
+    // Redirect user to Paystack payment page
+    window.location.href = result.payment_url;
   });
 
   // View Orders button
