@@ -210,35 +210,43 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', centerDashboardOnMobile);
     centerDashboardOnMobile();
 
-  // Fetch available networks for Buy Data
+  // Fetch available networks for Buy Data from backend (which may use SmartDataLink API)
   const networkSelect = document.getElementById('network');
-  ["MTN", "Vodafone", "AirtelTigo"].forEach(net => {
-      const opt = document.createElement('option');
-      opt.value = net.toLowerCase();
-      opt.textContent = net;
-      networkSelect.appendChild(opt);
-  });
+  fetch('/api/networks')
+    .then(res => res.json())
+    .then(networks => {
+      networks.forEach(net => {
+        const opt = document.createElement('option');
+        opt.value = net.id;
+        opt.textContent = net.name;
+        networkSelect.appendChild(opt);
+      });
+    });
 
-  // Update data plans when network changes
+  // Update data plans when network changes, fetch from backend (which uses SmartDataLink API)
   document.getElementById('network').addEventListener('change', function() {
-      const networkId = this.value;
-      const dataPlanSelect = document.getElementById('data-plan');
-      dataPlanSelect.innerHTML = '<option value="">Loading...</option>';
-      if (networkId) {
-          fetch(`/api/data-plans?network=${networkId}`)
-              .then(res => res.json())
-              .then(plans => {
-                  dataPlanSelect.innerHTML = '';
-                  plans.forEach(plan => {
-                      const opt = document.createElement('option');
-                      opt.value = plan.id;
-                      opt.textContent = plan.name;
-                      dataPlanSelect.appendChild(opt);
-                  });
-              });
-      } else {
-          dataPlanSelect.innerHTML = '<option value="">Select a network first</option>';
-      }
+    const networkId = this.value;
+    const dataPlanSelect = document.getElementById('data-plan');
+    dataPlanSelect.innerHTML = '<option value="">Loading...</option>';
+    if (networkId) {
+      fetch(`/api/data-plans?network=${networkId}`)
+        .then(res => res.json())
+        .then(plans => {
+          dataPlanSelect.innerHTML = '';
+          // If plans is an array, use it directly; if it's an object, try to extract array
+          (Array.isArray(plans) ? plans : (plans.data || plans.plans || [])).forEach(plan => {
+            const opt = document.createElement('option');
+            opt.value = plan.id || plan.value || plan.name;
+            opt.textContent = plan.name || plan.label || plan.id;
+            dataPlanSelect.appendChild(opt);
+          });
+        })
+        .catch(() => {
+          dataPlanSelect.innerHTML = '<option value="">Failed to load plans</option>';
+        });
+    } else {
+      dataPlanSelect.innerHTML = '<option value="">Select a network first</option>';
+    }
   });
 
   // Handle Buy Data form submission
@@ -266,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-topup').addEventListener('click', function() {
       document.getElementById('topup-modal').style.display = 'none';
   });
-  // Handle Top Up form submission (Paystack redirect integration)
+  // Handle Top Up form submission (Paystack redirect integration, only amount required)
   document.getElementById('topup-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const amount = document.getElementById('topup-amount').value;
