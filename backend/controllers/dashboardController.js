@@ -27,12 +27,14 @@ const dataPlans = {
         { id: '50gb', name: '50 GB — ₵230.00' }
     ],
     vodafone: [
-        { id: '1gb', name: '1 GB — ₵9.00' },
-        { id: '2gb', name: '2 GB — ₵17.00' },
-        { id: '3gb', name: '3 GB — ₵25.00' },
-        { id: '4gb', name: '4 GB — ₵33.00' },
-        { id: '5gb', name: '5 GB — ₵41.00' },
-        { id: '10gb', name: '10 GB — ₵80.00' }
+        { id: '10gb', name: '10 GB — ₵46.00' },
+        { id: '15gb', name: '15 GB — ₵65.00' },
+        { id: '20gb', name: '20 GB — ₵85.00' },
+        { id: '25gb', name: '25 GB — ₵95.00' },
+        { id: '30gb', name: '30 GB — ₵120.00' },
+        { id: '40gb', name: '40 GB — ₵160.00' },
+        { id: '50gb', name: '50 GB — ₵194.00' },
+        { id: '100gb', name: '100 GB — ₵372.00' }
     ],
     airteltigo: [
         { id: '1gb', name: '1 GB — ₵4.50' },
