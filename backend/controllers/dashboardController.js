@@ -53,16 +53,7 @@ const dataPlans = {
         { id: '14gb', name: '14 GB — ₵63.00' },
         { id: '15gb', name: '15 GB — ₵68.00' }
     ],
-    telecel: [
-        { id: '10gb', name: '10 GB — ₵46.00' },
-        { id: '15gb', name: '15 GB — ₵65.00' },
-        { id: '20gb', name: '20 GB — ₵85.00' },
-        { id: '25gb', name: '25 GB — ₵95.00' },
-        { id: '30gb', name: '30 GB — ₵120.00' },
-        { id: '40gb', name: '40 GB — ₵160.00' },
-        { id: '50gb', name: '50 GB — ₵194.00' },
-        { id: '100gb', name: '100 GB — ₵372.00' }
-    ]
+    // telecel list removed; now under vodafone
 };
 
 exports.getDashboard = (req, res) => {
