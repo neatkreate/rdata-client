@@ -21,7 +21,8 @@ exports.initiatePaystack = async (req, res) => {
       {
         email,
         amount: payAmount,
-        currency: 'GHS'
+        currency: 'GHS',
+        channels: ['mobile_money']
       },
       {
         headers: {
