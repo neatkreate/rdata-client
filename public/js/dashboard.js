@@ -255,10 +255,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const network = document.getElementById('network').value;
       const dataPlan = document.getElementById('data-plan').value;
       const beneficiary = document.getElementById('beneficiary-number').value;
+      let email = '';
+      try {
+        const auth = JSON.parse(localStorage.getItem('rdata_auth'));
+        if (!auth || !auth.user || !auth.user.email) throw new Error('No user email');
+        email = auth.user.email;
+      } catch (e) {
+        alert('No user session found. Please log in.');
+        return;
+      }
       fetch('/api/buy-data', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ network, dataPlan, beneficiary })
+          body: JSON.stringify({ network, dataPlan, beneficiary, email })
       })
       .then(res => res.json())
       .then(result => {

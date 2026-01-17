@@ -57,9 +57,65 @@ exports.getDataPlans = (req, res) => {
     res.json(dataPlans[network]);
 };
 
-exports.buyData = (req, res) => {
-    // Implement real buy logic here
-    res.json({ message: 'Data purchase successful!' });
+const fetch = require('node-fetch');
+exports.buyData = async (req, res) => {
+    const { network, dataPlan, beneficiary, email } = req.body;
+    if (!network || !dataPlan || !beneficiary || !email) {
+        return res.status(400).json({ message: 'Missing required fields.' });
+    }
+
+    // Find user and check wallet balance
+    const user = users.find(u => u.email === email);
+    if (!user) {
+        return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // Extract price from dataPlan string (e.g., '1 GB — ₵4.90')
+    const priceMatch = dataPlan.match(/₵([\d.]+)/);
+    const price = priceMatch ? parseFloat(priceMatch[1]) : null;
+    if (!price) {
+        return res.status(400).json({ message: 'Could not determine package price.' });
+    }
+    if ((user.wallet || 0) < price) {
+        return res.status(402).json({ message: 'Insufficient wallet balance.' });
+    }
+
+    // SmartDataLink API credentials (use env vars in production)
+    const SMARTDATALINK_API_KEY = process.env.SMARTDATALINK_API_KEY || 'YOUR_API_KEY';
+    const SMARTDATALINK_API_SECRET = process.env.SMARTDATALINK_API_SECRET || 'YOUR_API_SECRET';
+    const SMARTDATALINK_BASE_URL = 'https://blessdatahub.com/api/create_order.php';
+
+    // Prepare package size (assume dataPlan is like '1 GB — ₵4.90', extract '1GB')
+    const packageSize = dataPlan.split(' ')[0].replace('GB', 'GB');
+
+    const payload = {
+        api_key: SMARTDATALINK_API_KEY,
+        api_secret: SMARTDATALINK_API_SECRET,
+        beneficiary,
+        package_size: packageSize
+    };
+
+    try {
+        const response = await fetch(SMARTDATALINK_BASE_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${SMARTDATALINK_API_KEY}`
+            },
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (result.status === 'success') {
+            // Deduct from wallet and save
+            user.wallet = (user.wallet || 0) - price;
+            require('fs').writeFileSync(require('path').join(__dirname, '../models/users.json'), JSON.stringify(users, null, 2));
+            res.json({ message: 'Data purchase successful!', order_id: result.order_ids[0], cost: result.total_cost });
+        } else {
+            res.status(400).json({ message: 'Data purchase failed.', details: result });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Error connecting to SmartDataLink API.', error: err.message });
+    }
 };
 
 exports.topUp = (req, res) => {
