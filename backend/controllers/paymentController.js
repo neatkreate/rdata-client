@@ -32,13 +32,15 @@ exports.initiatePaystack = async (req, res) => {
         }
       }
     );
-
     res.json({ status: 'success', data: response.data });
   } catch (error) {
-    res.status(500).json({
-      status: 'error',
-      error: error.response?.data || error.message
-    });
+    if (error.response) {
+      console.error('Paystack INIT error:', error.response.data);
+      res.status(500).json({ status: 'error', error: error.response.data });
+    } else {
+      console.error('Paystack INIT error:', error);
+      res.status(500).json({ status: 'error', error: error.message });
+    }
   }
 };
 

@@ -19,19 +19,25 @@ router.post('/topup/initiate', async (req, res) => {
       channels: ['mobile_money']
     };
     console.log('Paystack INIT payload:', payload);
-    const response = await axios.post(
-      'https://api.paystack.co/transaction/initialize',
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
-          'Content-Type': 'application/json'
+      const response = await axios.post(
+        'https://api.paystack.co/transaction/initialize',
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+            'Content-Type': 'application/json'
+          }
         }
+      );
+      res.json(response.data);
+    } catch (error) {
+      if (error.response) {
+        console.error('Paystack INIT error:', error.response.data);
+        res.status(500).json({ message: 'Payment initiation failed', error: error.response.data });
+      } else {
+        console.error('Paystack INIT error:', error);
+        res.status(500).json({ message: 'Payment initiation failed', error: error.message });
       }
-    );
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to initiate transaction', error: error.response?.data || error.message });
   }
 });
 
