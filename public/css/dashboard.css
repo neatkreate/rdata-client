@@ -597,7 +597,7 @@ main {
 }
 .card {
     background: #0077ff;
-    color: #222;
+    color: #fff;
     border-radius: 8px;
     padding: 1rem;
     text-align: center;
@@ -607,6 +607,7 @@ main {
 .card-value {
     font-size: 1.3rem;
     margin-top: 0.5rem;
+    color: #fff;
 }
 #view-orders {
     background: #fff;
