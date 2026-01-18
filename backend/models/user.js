@@ -20,39 +20,3 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
-    saveUsers(users);
-  }
-  return admin;
-}
-
-// Call on module load
-ensureDefaultAdmin();
-
-// Helper to get admin credentials (for documentation/testing only)
-function getDefaultAdminCredentials() {
-  return { email: 'richmondobeng2004@gmail.com', password: 'Password1!' };
-}
-
-module.exports = {
-  get users() {
-    return loadUsers();
-  },
-  set users(val) {
-    saveUsers(val);
-  },
-  loadUsers,
-  saveUsers,
-  ensureDefaultAdmin,
-  getDefaultAdminCredentials,
-  // Add wallet update helper
-  creditWallet: function(email, amount) {
-    const users = loadUsers();
-    const user = users.find(u => u.email === email);
-    if (user) {
-      user.wallet = (user.wallet || 0) + amount;
-      saveUsers(users);
-      return true;
-    }
-    return false;
-  }
-};
